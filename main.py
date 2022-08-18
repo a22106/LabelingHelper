@@ -5,7 +5,8 @@ from PyQt5.QtWidgets import QApplication,QPushButton, QMainWindow, \
 import glob, json, os, math, copy, shutil
 import numpy as np
 
-class editResult():
+
+class EditLabel():
     def __init__(self, filepath = None):
         self.filepath = filepath
         self.set_json_list(filepath)
@@ -461,7 +462,7 @@ class MyApp(QMainWindow):
                 self.filepath = filepath
                 print(f'{self.filepath}에서 시작합니다.')
                 self.statusBar().showMessage(f'{self.filepath}에서 시작합니다.')
-                self.editResult = editResult(self.filepath)
+                self.editResult = EditLabel(self.filepath)
             else:
                 print('잘못된 경로입니다. 경로를 다시 설정해주세요.')
                 self.statusBar().showMessage('잘못된 경로입니다. 경로를 다시 설정해주세요.')
@@ -490,7 +491,7 @@ class MyApp(QMainWindow):
         if ok and os.path.isfile(glob.glob(filepath + r'\*.json')[0]):
             self.statusBarMessage(filepath)
             self.filepath = filepath
-            self.editResult = editResult(self.filepath)
+            self.editResult = EditLabel(self.filepath)
         else:
             self.statusBarMessage('파일 경로 오류')
             self.filepath = None
