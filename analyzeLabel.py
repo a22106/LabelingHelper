@@ -7,14 +7,14 @@ class AnalyzeLabel(EditLabel):
         super().__init__(clipPath)
         '''
         부모 클래스 변수
-        - self.filepath
-        - self.backupfolder
-        - self.json_list
-        - self.json_file_num
+        - self.filepath: str - 클립 경로
+        - self.backupfolder: str - 백업 폴더 경로
+        - self.json_list: list - json 파일 리스트(result)
+        - self.json_file_num: int - json 파일 수
         
         현재 클래스의 변수
-        - self.clip_path
-        - self.clip_name
+        - self.clip_path: str - 클립 경로
+        - self.clip_name: str - 클립 이름
         '''
         # clip_name: S_Clip_00000_01 ~ 17 or A_Clip_00000_01 ~ 17
         self.clip_path, self.clip_name = self.set_path(clipPath)        
@@ -89,7 +89,6 @@ class AnalyzeLabel(EditLabel):
         # 파일명에 고려해야할 것
         # 과제번호_클립번호_센서_프레임.확장자
         
-        
         for unit in self.clip_name.split('_'):
             if unit.isdigit():
                 clip_num = int(unit)
@@ -97,6 +96,7 @@ class AnalyzeLabel(EditLabel):
         
         file_list = glob.glob(path + '/*')
         for file in file_list:
+            is_file_renamed = False
             if sensor_abb =='GI':
                 file_num = int(file[-5])
             else:
@@ -107,11 +107,19 @@ class AnalyzeLabel(EditLabel):
             if file.split('\\')[-1][:4].isdigit() or file.split('\\')[-1][:5] == 'event' or file.split('\\')[-1][:3] == '481': # GNSS_INS 의 구 파일이 event1.txt로 명명된 경우 포함
                 renamed_file = path + '/2-048_' + f'{clip_num:05d}' + '_' + sensor_abb+ f'_{file_num:03d}.' + file_extension
                 os.renames(file, renamed_file)
-                print(file, '->', renamed_file)
+                if not is_file_renamed: 
+                    print(file, '->', renamed_file)
+                    is_file_renamed = True
+            
             else:
                 renamed_file = '_'.join(file.split('_')[:-1]) + '_{:03d}'.format(file_num) + '.' + file_extension
                 os.renames(file, renamed_file)
                 print(file, '->', renamed_file)
+                if not is_file_renamed: 
+                    print(file, '->', renamed_file)
+                    is_file_renamed = True
+                    
+    
             
-tester = AnalyzeLabel('C:\datasets\extract_2022-08-02-18-18-53\Clip_00077_test')
-tester.fix_filenames()
+# tester = AnalyzeLabel('C:\datasets\extract_2022-08-02-18-18-53\Clip_00034_test')
+# tester.fix_filenames()
