@@ -104,7 +104,7 @@ class AnalyzeLabel(EditLabel):
             file_extension = file.split('.')[-1]
             
             # if first 4 string is a intiger
-            if file.split('\\')[-1][:4].isdigit() or file.split('\\')[-1][:5] == 'event': # GNSS_INS 의 구 파일이 event1.txt로 명명된 경우 포함
+            if file.split('\\')[-1][:4].isdigit() or file.split('\\')[-1][:5] == 'event' or file.split('\\')[-1][:3] == '481': # GNSS_INS 의 구 파일이 event1.txt로 명명된 경우 포함
                 renamed_file = path + '/2-048_' + f'{clip_num:05d}' + '_' + sensor_abb+ f'_{file_num:03d}.' + file_extension
                 os.renames(file, renamed_file)
                 print(file, '->', renamed_file)
@@ -113,5 +113,5 @@ class AnalyzeLabel(EditLabel):
                 os.renames(file, renamed_file)
                 print(file, '->', renamed_file)
             
-tester = AnalyzeLabel('C:\datasets\extract_2022-08-02-18-18-53\Clip_00034_test')
+tester = AnalyzeLabel('C:\datasets\extract_2022-08-02-18-18-53\Clip_00077_test')
 tester.fix_filenames()
