@@ -33,8 +33,11 @@ class AnalyzeLabel(EditLabel):
             return False
         return clipPath, clipname
     
-    def fix_filenames(self):
-        clip_listdir = os.listdir(self.clip_path)
+    def fix_filenames(self, clip_path = None):
+        if clip_path:
+            clip_listdir = os.listdir(clip_path)
+        else:
+            clip_listdir = os.listdir(self.clip_path)
         sensor_abb_dic = {'CameraFront': 'CF', 'Lidar': 'LR', 'RadarFront': 'RF', 
                       'GNSS_INS': 'GI', 'CameraRear': 'CR', 'Lidar_camera_calib': 'LCC',
                       'Lidar_radar_calb': 'LRC', 'Radar_camera_calib': 'RCC', 'FrontCenter': 'CF',
@@ -118,8 +121,6 @@ class AnalyzeLabel(EditLabel):
                 if not is_file_renamed: 
                     print(file, '->', renamed_file)
                     is_file_renamed = True
-                    
-    
             
 # tester = AnalyzeLabel('C:\datasets\extract_2022-08-02-18-18-53\Clip_00034_test')
 # tester.fix_filenames()

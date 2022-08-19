@@ -2,6 +2,7 @@ import sys
 from PyQt5.QtWidgets import QApplication,QPushButton, QMainWindow, \
     QAction, QInputDialog, QDesktopWidget, QFileDialog
 from editLabel import EditLabel
+from analyzeLabel import AnalyzeLabel
         
 import glob, json, os, math, copy, shutil
 import numpy as np
@@ -91,6 +92,8 @@ class MyApp(QMainWindow):
         
         # 10. 파일명 최신화 버튼 생성
         refreshFileNameButton = QPushButton('파일명 최신화', self)
+        refreshFileNameButton.move(150, 300)
+        refreshFileNameButton.clicked.connect(self.refreshFileName)
         
         # # 10 파일명 통일 기능 버튼 생성
         # renameFileNameButton = QPushButton('9. 파일명 통일', self)
@@ -172,18 +175,37 @@ class MyApp(QMainWindow):
                 print(f'{self.filepath}에서 시작합니다.')
                 self.statusBar().showMessage(f'{self.filepath}에서 시작합니다.')
                 self.editResult = EditLabel(self.filepath)
+                self.analyzeLabel = AnalyzeLabel(self.filepath)
             else:
                 print('잘못된 경로입니다. 경로를 다시 설정해주세요.')
                 self.statusBar().showMessage('잘못된 경로입니다. 경로를 다시 설정해주세요.')
         except:
             print('잘못된 경로입니다. 경로를 다시 설정해주세요.')
             self.statusBar().showMessage('잘못된 경로입니다. 경로를 다시 설정해주세요.')
+    
+    # 파일명 일괄 수정
+    def refreshFileName(self):
+        if self.filepath is None:
+            self.statusBarMessage('파일 경로를 설정하세요.')
+            print('파일 경로를 설정하세요.')
+            return
+        extract_path = '/'.join(self.analyzeLabel.clip_path.split('/')[:-1])
+        # create clip list only is folder
+        clip_list = os.listdir(extract_path)
+        clip_list.sort()
+
+        clip_list_path = [os.path.join(extract_path, clip_) for clip_ in clip_list if os.path.isdir(os.path.join(extract_path, clip_))]
+        for clip in clip_list_path:"""""""""""""""""""""""""""""""
+            self.analyzeLabel.fix_filenames(clip)
+        print('----------------------------------------------------')
+        
+        
 
     # 상태 바 메세지 출력
     def statusBarMessage(self, message = None):
         if message is None:
-            self.statusBar().showMessage('경로 설정 안됨')
-            print('경로 설정 안됨')
+            self.statusBar().showMessage('경로를 설정하세요.')
+            print('경로를 설정하세요.')
         else:
             self.statusBar().showMessage(message)
     
@@ -208,7 +230,8 @@ class MyApp(QMainWindow):
     # 0. 파일 백업
     def backup(self):
         if self.filepath is None:
-            self.statusBarMessage('파일 경로 설정 안됨')
+            self.statusBarMessage('파일 경로를 설정하세요.')
+            print('파일 경로를 설정하세요.')
             return
         else:
             self.editResult.makeBackup()
@@ -216,7 +239,8 @@ class MyApp(QMainWindow):
 
     def restore(self):
         if self.filepath is None:
-            self.statusBarMessage('파일 경로 설정 안됨')
+            self.statusBarMessage('파일 경로를 설정하세요.')
+            print('파일 경로를 설정하세요.')
             return
         else:
             count = self.editResult.restoreBackup()
@@ -229,6 +253,7 @@ class MyApp(QMainWindow):
     def checkObjectId(self):
         if self.filepath is None:
             self.statusBarMessage('파일 경로를 설정하세요.')
+            print('파일 경로를 설정하세요.')
             return
         else:
             objId, ok = QInputDialog.getText(self, '객체 아이디 확인', '확인하려는 객체 아이디를 입력하세요:')
