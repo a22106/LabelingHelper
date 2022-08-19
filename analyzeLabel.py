@@ -57,6 +57,7 @@ class AnalyzeLabel(EditLabel):
                 sensor_abb = sensor_abb_dic[d2_folder]
                 # fix depth2 path
                 self.rename_files(depth3_path, sensor_abb)
+                continue
             
             # 2. fix depth4 files
             if d2_folder in depth4_folders: 
@@ -66,6 +67,7 @@ class AnalyzeLabel(EditLabel):
                     sensor_abb = sensor_abb_dic[d3_folder]
                     depth4_path = depth3_path + '/' + d3_folder
                     self.rename_files(depth4_path, sensor_abb)
+                continue
                 
             # 3. fix depth5 files
             if d2_folder in depth5_folders:
@@ -102,13 +104,14 @@ class AnalyzeLabel(EditLabel):
             file_extension = file.split('.')[-1]
             
             # if first 4 string is a intiger
-            if file.split('\\')[:4].isdigit():
-                renamed_file = '2-048_' + f'{clip_num:05d}' + '_' + sensor_abb+ f'_{file_num:03d}.' + file_extension
-                # renamed_file = '_'.join(file.split('_')[:-1]) + \
-                #                 '_{:03d}'.format(file_num) + '.' + file_extension
+            if file.split('\\')[-1][:4].isdigit() or file.split('\\')[-1][:5] == 'event': # GNSS_INS 의 구 파일이 event1.txt로 명명된 경우 포함
+                renamed_file = path + '/2-048_' + f'{clip_num:05d}' + '_' + sensor_abb+ f'_{file_num:03d}.' + file_extension
                 os.renames(file, renamed_file)
                 print(file, '->', renamed_file)
-            el
+            else:
+                renamed_file = '_'.join(file.split('_')[:-1]) + '_{:03d}'.format(file_num) + '.' + file_extension
+                os.renames(file, renamed_file)
+                print(file, '->', renamed_file)
             
 tester = AnalyzeLabel('C:\datasets\extract_2022-08-02-18-18-53\Clip_00034_test')
 tester.fix_filenames()
