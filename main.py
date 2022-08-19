@@ -59,22 +59,22 @@ class MyApp(QMainWindow):
         restoreButton.clicked.connect(self.restore)
 
         # 1. 객체 아이디 확인 버튼 생성
-        checkObjIdButton = QPushButton('1. 아이디 확인', self)
+        checkObjIdButton = QPushButton('아이디 확인', self)
         checkObjIdButton.move(50, 100)
         checkObjIdButton.clicked.connect(self.checkObjectId)
 
         # 2. 객체 아이디 변경 버튼 생성
-        changeObjIdButton = QPushButton('2. 아이디 변경', self)
+        changeObjIdButton = QPushButton('아이디 변경', self)
         changeObjIdButton.move(50, 150)
         changeObjIdButton.clicked.connect(self.changeObjectId)
         
         # 3. 객체 박스 크기 변경 버튼 생성
-        changeDimButton = QPushButton('3. 박스 크기 변경', self)
+        changeDimButton = QPushButton('박스 크기 변경', self)
         changeDimButton.move(50, 200)
         changeDimButton.clicked.connect(self.changeDimension)
 
         # 4. 객체 박스 각도 변경 버튼 생성
-        changeDegreeButton = QPushButton('4. 각도 변경', self)
+        changeDegreeButton = QPushButton('각도 변경', self)
         changeDegreeButton.move(50, 250)
         changeDegreeButton.clicked.connect(self.changeAngle)
 
@@ -84,24 +84,27 @@ class MyApp(QMainWindow):
         # changeBugIdButton.clicked.connect(self.changeBugId)
         
         # 6. 불러오기 확인 버튼 생성
-        checkLoadingFiles = QPushButton('5. 불러오기 확인', self)
+        checkLoadingFiles = QPushButton('불러오기 확인', self)
         checkLoadingFiles.move(150, 100)
         checkLoadingFiles.clicked.connect(self.checkLoadingFiles)
         
         # 7. 카테고리 수정 버튼 생성
-        changeCategoryButton = QPushButton('6. 카테고리 수정', self)
+        changeCategoryButton = QPushButton('카테고리 수정', self)
         changeCategoryButton.move(150, 150)
         changeCategoryButton.clicked.connect(self.changeCategory)
         
         # 8. 파일 자동 생성 버튼 생성
-        autoMakeFiles = QPushButton('7. 파일 자동 생성', self)
+        autoMakeFiles = QPushButton('파일 자동 생성', self)
         autoMakeFiles.move(150, 200)
         autoMakeFiles.clicked.connect(self.autoMakeFiles)
         
         # 9. 객체 복사 버튼 생성
-        copyObjectButton = QPushButton('8. 객체 복사', self)
+        copyObjectButton = QPushButton('객체 복사', self)
         copyObjectButton.move(150, 250)
         copyObjectButton.clicked.connect(self.copyObject)
+        
+        # 10. 파일명 최신화 버튼 생성
+        refreshFileNameButton = QPushButton('파일명 최신화', self)
         
         # # 10 파일명 통일 기능 버튼 생성
         # renameFileNameButton = QPushButton('9. 파일명 통일', self)
@@ -131,7 +134,7 @@ class MyApp(QMainWindow):
                 self.statusBarMessage('파일 구성이 잘못되었거나 json파일이 없습니다.')
             first_file_num = int(first_file.split('_')[-1].split('.')[0])
             extra_file_name = '_'.join(first_file.split('_')[:-1])
-            for idx in range(1, 101):
+            for idx in range(1, 100 -1):
                 cur_file = r'{}_{:03d}.json'.format(extra_file_name, idx)
                 old_file = r'{}_{:04d}.json'.format(extra_file_name, idx)
                 if os.path.isfile(old_file):
@@ -146,6 +149,7 @@ class MyApp(QMainWindow):
                         json.dump(json_data, f, indent=4)
                         print('{} 파일 생성 완료'.format(cur_file))
         self.editResult.set_json_list(self.filepath)
+        print('----------------------------------------------------')
         return True
                         
     # 10. 파일명 통일 기능 버튼 생성
