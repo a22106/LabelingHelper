@@ -19,20 +19,6 @@ class MyApp(QMainWindow):
         self.center()
         self.statusBarMessage()      
 
-        # 창 닫기 버튼 생성
-        # btn = QPushButton('Close', self)
-        # btn.clicked.connect(QApplication.instance().quit)
-        # btn.move(300, 350)
-        # hbox = QHBoxLayout()
-        # hbox.addStretch(1)
-        # hbox.addWidget(btn)
-        # hbox.addStretch(1)
-        # vbox = QVBoxLayout()
-        # vbox.addStretch(1)
-        # vbox.addLayout(hbox)
-        # vbox.addStretch(1)
-        # self.setLayout(vbox)
-
         # # 파일 경로 입력 버튼 생성
         # inputDiButton = QPushButton('파일 경로 입력', self)
         # inputDiButton.move(300, 300)
