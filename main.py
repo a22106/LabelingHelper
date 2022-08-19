@@ -195,7 +195,7 @@ class MyApp(QMainWindow):
         clip_list.sort()
 
         clip_list_path = [os.path.join(extract_path, clip_) for clip_ in clip_list if os.path.isdir(os.path.join(extract_path, clip_))]
-        for clip in clip_list_path:"""""""""""""""""""""""""""""""
+        for clip in clip_list_path:
             self.analyzeLabel.fix_filenames(clip)
         print('----------------------------------------------------')
         
