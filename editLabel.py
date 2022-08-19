@@ -2,7 +2,8 @@ import glob, json, os, copy, shutil
 
 
 class EditLabel():
-    def __init__(self, filepath = None):
+    def __init__(self, filepath:str = None):
+        filepath = filepath.replace('\\', '/')
         self.filepath = filepath
         self.set_json_list(filepath)
         self.backupfolder = '/'.join(self.filepath.split('/')[:-1]) + '/result_backup'
@@ -23,11 +24,13 @@ class EditLabel():
         # if file Path is list
         if isinstance(filePath, list):
             self.json_list = filePath
+        elif filePath.split('/')[-1] != 'result':
+            self.json_list = glob.glob(filePath + 'result/*.json')
         else:
             self.json_list = glob.glob(filePath + '/*.json')
         self.json_list.sort()
         self.json_file_num = len(self.json_list)
-        return True
+        return self.json_list, self.json_file_num
 
     # check object id
     def checkObjectId(self, id, maxId = None) -> list:
