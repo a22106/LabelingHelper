@@ -42,8 +42,9 @@ class AnalyzeLabel(EditLabel):
             clip_listdir = os.listdir(self.clip_path)
         sensor_abb_dic = {'CameraFront': 'CF', 'Lidar': 'LR', 'RadarFront': 'RF', 
                       'GNSS_INS': 'GI', 'CameraRear': 'CR', 'Lidar_camera_calib': 'LCC',
-                      'Lidar_radar_calib': 'LRC', 'Radar_camera_calib': 'RCC'}
-        depth3_folders = ['lidar', 'gnss_ins'] # 추후에 result도 camera 파일명 정보대로 변경 기능 추가
+                      'Lidar_radar_calib': 'LRC', 'Radar_camera_calib': 'RCC', 'result':'CF',
+                      'result_backup':'CF'}
+        depth3_folders = ['lidar', 'gnss_ins', 'result'] # 추후에 result도 camera 파일명 정보대로 변경 기능 추가
         depth4_folders = ['radar', 'calib']
         depth5_folders = ['camera']
 
@@ -101,7 +102,7 @@ class AnalyzeLabel(EditLabel):
 
         spetical_case = False
         is_calib = False
-        clip_num = int(path.split('Clip_')[-1].split('_')[0])
+        clip_num = int(path.split('Clip_')[-1].split('_')[0]) # 00000 ~ 99999 클립 고유번호
         if sensor_abb == 'LCC' or sensor_abb == 'LRC' or sensor_abb == 'RCC':
             is_calib = True
         
@@ -131,8 +132,6 @@ class AnalyzeLabel(EditLabel):
                 file_name[:5] == 'event' or \
                 file_name[:3] == '481':
                 spetical_case = True
-            
-            # if first 4 string is a intiger
             
             if is_calib:
                 # change '481_ND' to '2-048' in file

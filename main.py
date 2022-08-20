@@ -123,7 +123,7 @@ class MyApp(QMainWindow):
                 self.statusBarMessage('파일 구성이 잘못되었거나 json파일이 없습니다.')
             first_file_num = int(first_file.split('_')[-1].split('.')[0])
             extra_file_name = '_'.join(first_file.split('_')[:-1])
-            for idx in range(1, 100 -1):
+            for idx in range(1, 100 +1):
                 cur_file = r'{}_{:03d}.json'.format(extra_file_name, idx)
                 old_file = r'{}_{:04d}.json'.format(extra_file_name, idx)
                 if os.path.isfile(old_file):
@@ -158,7 +158,7 @@ class MyApp(QMainWindow):
         else:
             file_list = glob.glob(self.filepath + r'\*.json')
             file_list.sort()
-            self.editResult.set_json_list(file_list)
+            self.editResult.set_json_list(self.filepath)
             print("파일 개수 : {}".format(len(file_list)))
             with open(file_list[0], 'r') as f:
                 json_data = json.load(f) # json 데이터 불러옴
@@ -197,6 +197,7 @@ class MyApp(QMainWindow):
         clip_list_path = [os.path.join(extract_path, clip_) for clip_ in clip_list if os.path.isdir(os.path.join(extract_path, clip_))]
         for clip in clip_list_path:
             self.analyzeLabel.fix_filenames(clip)
+        self.editResult.set_json_list(self.filepath) # result 경로 파일 목록 새로고침
         print('----------------------------------------------------')
         
         
@@ -246,6 +247,7 @@ class MyApp(QMainWindow):
             count = self.editResult.restoreBackup()
             if count == 0:
                 self.statusBarMessage('백업 파일이 없습니다.')
+                print('백업 파일이 없습니다.')
             else:
                 self.statusBarMessage('{}개 파일 복원 완료'.format(count))
 
