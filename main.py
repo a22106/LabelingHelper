@@ -1,291 +1,11 @@
 import sys
 from PyQt5.QtWidgets import QApplication,QPushButton, QMainWindow, \
     QAction, QInputDialog, QDesktopWidget, QFileDialog
+from editLabel import EditLabel
+from analyzeLabel import AnalyzeLabel
         
 import glob, json, os, math, copy, shutil
 import numpy as np
-
-
-class EditLabel():
-    def __init__(self, filepath = None):
-        self.filepath = filepath
-        self.set_json_list(filepath)
-        self.backupfolder = '/'.join(self.filepath.split('/')[:-1]) + '/result_backup'
-
-    def __len__(self):
-        return len(self.json_list)
-
-    def __getitem__(self, index):
-        return self.json_list[index]
-
-    def showJson(self, frame):
-        with open(self.json_list[frame], 'r') as f:
-            json_data = json.load(f)
-        print("Show json info")
-        return json_data
-    
-    def set_json_list(self, filePath:str = None, fileList: list = None): 
-        if fileList is None:
-            self.json_list = glob.glob(filePath + '/*.json')
-            self.json_list.sort()
-        else:
-            self.json_list = fileList
-        self.json_file_num = len(self.json_list)
-        return True
-
-
-    # check object id
-    def checkObjectId(self, id, maxId = None) -> list:
-        frame_is_Id = []
-        for idx in range(self.json_file_num):
-            with open(self.json_list[idx], 'r') as f:
-                json_data = json.load(f)
-                
-            for annot in json_data['annotation']:
-                if int(annot['id']) == int(id):
-                    print(f'프레임 {idx+1}에 객체 번호 {id}가 있습니다.')
-                    frame_is_Id.append(idx+1)
-
-                # if maxId:
-                #     if int(annot['id']) > maxId:
-                #         print(f'frame {idx+1}: {annot["id"]}가 최대 id보다 큼')
-        
-        if not frame_is_Id:
-            print(f'어느 프레임에도 객체 번호 {id}(이)가 없습니다.')
-            print("----------------------------------------------------")
-
-        return frame_is_Id
-    
-    # change dimension
-    def changeDim(self, id, width, height, length):
-        dim = [float(width), float(height), float(length)] # 변경할 크기
-        with open(self.json_list[0], 'r') as f:
-            temp_data = json.load(f)
-        for idx in range(len(dim)):
-            if dim[idx] == 0:
-                dim[idx] = temp_data['annotation'][0]['3d_box'][0]['dimension'][idx]
-        
-        for idx in range(self.json_file_num):
-            with open(self.json_list[idx], 'r') as f:
-                json_data = json.load(f) # json 데이터 불러옴
-
-            ori_dim = copy.deepcopy(dim) # 원래 크기 복사
-
-            for annot in json_data['annotation']:
-                if int(annot['id']) == int(id):
-                    annot['3d_box'][0]['dimension'] = dim # 변경
-                    print(f'프레임 {json_data["frame_no"]}: {id}의 크기를 {dim[0]}, {dim[1]}, {dim[2]}로 변경')
-                    with open(self.json_list[idx], 'w') as f:
-                        json.dump(json_data, f, indent=4)
-                    dim = ori_dim # 원래 크기로 변경
-                    #print(f'{self.json_list[idx]}에 변경 완료')
-        return dim
-
-    # change id
-    def changeId(self, id, newId):
-        for idx in range(self.json_file_num):
-            with open(self.json_list[idx], 'r') as f:
-                json_data = json.load(f) # json 데이터 불러옴
-
-            for annot in json_data['annotation']:
-                if annot['id'] == f'{id}' or annot['id'] == id:
-                    annot['id'] = f'{newId}'
-                    print(f'프레임 {json_data["frame_no"]}: {id}의 id를 {newId}로 변경')
-                    with open(self.json_list[idx], 'w') as f:
-                        json.dump(json_data, f, indent=4)
-                        #print(f'{self.json_list[idx]}에 변경 완료')
-        print("----------------------------------------------------")    
-
-    # change angle
-    def changeAngle(self, id, angle):
-        for idx in range(self.json_file_num):
-            with open(self.json_list[idx], 'r') as f:
-                json_data = json.load(f) # json 데이터 불러옴
-            angle = float(angle) # 변경할 크기
-            # change degree to radian
-            angle_rad = math.radians(angle)
-
-            for annot in json_data['annotation']:
-                if annot['id'] == f'{id}' or annot['id'] == id:
-                    annot['3d_box'][0]['rotation_y'] = angle_rad
-                    print(f'프레임 {json_data["frame_no"]}: {id}의 각도를 {angle}로 변경')
-                    with open(self.json_list[idx], 'w') as f:
-                        json.dump(json_data, f, indent=4)
-                        #print(f'{self.json_list[idx]}에 변경 완료')
-        print("----------------------------------------------------")
-                            
-    # change category
-    def changeCategory(self, id, obj_type, category: str):
-        atypical_cat = ['MEDIAN_STRIP', 'SOUND_BARRIER', 'OVERPASS', 'RAMP_SECT', 'TUNNEL']
-    
-        for idx in range(self.json_file_num):
-            with open(self.json_list[idx], 'r') as f:
-                json_data = json.load(f) # json 데이터 불러옴
-                id = int(id) 
-                
-            for annot in json_data['annotation']:
-                if annot['id'] == id and annot['category'] != category:
-                    annot['obj_type'] = obj_type
-                    annot['category'] = category
-                    if category in atypical_cat:
-                        annot['atypical_yn'] = "y"
-                    else:
-                        annot['atypical_yn'] = "n"
-                    
-                    print(f'프레임 {json_data["frame_no"]}: {id}의 카테고리를 {category}로 변경')
-                    with open(self.json_list[idx], 'w') as f:
-                        json.dump(json_data, f, indent=4)
-                        #print(f'{self.json_list[idx]}에 변경 완료')    
-        print("----------------------------------------------------")
-
-    # change bugged object id
-    def changeBuggedId(self, max_id):
-        # change bugged id that is bigger than max_id and end with series of 1
-        # for example if max_id is 30, chage 5111 to 5, 101 to 10, 111 to 11, 2111 to 21, 3111 to 3, 4111 to 4, 1011 to 10
-        # if max_id is 100, change 5111 to 51, 101 to 10, 111 to 11, 2111 to 21, 3111 to 3, 4111 to 4, 1011 to 10
-        # all buged numbers end with series of 1
-        changed_num_count = 0
-        for idx in range(self.json_file_num):
-            with open(self.json_list[idx], 'r') as f:
-                json_data = json.load(f) # json 데이터 불러옴
-            max_id = str(max_id) # 변경할 크기
-
-            for annot in json_data['annotation']:
-                if int(annot['id']) > int(max_id):
-                    for i in range(len(annot['id'])):
-                        if annot['id'][i] == '1' and int(annot['id'][:i+1]) > int(max_id):
-                            
-                            annot['id'] = annot['id'][:i]
-                            print(f'프레임 {json_data["frame_no"]}: {annot["id"]}의 id를 {annot["id"][:i]}로 변경')
-                            with open(self.json_list[idx], 'w') as f:
-                                json.dump(json_data, f, indent=4)
-                                changed_num_count += 1
-                            break
-                        
-                        elif annot['id'][i] == '1' and len(annot['id'][:i]) >= len(max_id):
-                            annot['id'] = annot['id'][:i]
-                            print(f'프레임 {json_data["frame_no"]}: {annot["id"]}의 id를 {annot["id"][:i]}로 변경')
-                            
-                            with open(self.json_list[idx], 'w') as f:
-                                json.dump(json_data, f, indent=4)
-                                changed_num_count += 1
-                            break
-                        
-                else:
-                    continue
-
-        print(f'{changed_num_count}개의 id를 변경했습니다.')
-        return changed_num_count
-    
-    # copy objects
-    def copyObject(self, id, frame, start=1, end=100, CHANGE=False):
-        id, start, end = int(id), int(start), int(end) # 변경할 크기
-        
-        with open(self.json_list[frame-1], 'r') as f:
-            json_data = json.load(f) # 목표 프레임의 json 데이터 불러옴
-        for annot1 in json_data['annotation']:
-            if int(annot1['id']) == id:
-                copy_annot = annot1
-                print(copy_annot)
-        
-        # 입력한 시작 프레임부터 종료 프레임까지 복사
-        for idx in range(start-1, end):
-            if idx+1 == frame:
-                continue
-
-            with open(self.json_list[idx], 'r') as f:
-                json_data = json.load(f) # json 데이터 불러옴
-
-            # 해당 프레임에 아무 객체 정보가 없다면 바로 객체 복사
-            if not json_data['annotation']:
-                json_data['annotation'].append(copy_annot)
-                with open(self.json_list[idx], 'w') as f:
-                    json.dump(json_data, f, indent=4)
-                print(f'프레임 {json_data["frame_no"]}: 객체 {id}의 오브젝트를 복사.')
-                continue
-            
-            obj_num = len(json_data['annotation']) # 해당 프레임에 있는 객체 수
-            obj_count = 0
-            for annot2 in json_data['annotation']:
-                obj_count+=1
-                if int(annot2['id']) == id:
-                    if CHANGE: # 붙여넣기 옵션이 켜져있다면 기존 객체의 값을 덮어쓰기
-                        annot2 = self.copy_annotation(annot2, copy_annot)
-                        print(f'프레임 {json_data["frame_no"]}: 객체 {id}의 오브젝트를 붙여넣기')
-                        break
-
-                    else: # 붙여넣기 옵션이 꺼져있다면 지나가기
-                        print(f'프레임 {json_data["frame_no"]}: 객체 {id}의 오브젝트를 지나감')
-                        break
-                
-                # if for문이 마지막에 도달했다면 객체 복사
-                
-                else: # 객체 id가 다르면 객체 복사
-                    if obj_num == obj_count:
-                        json_data['annotation'].append(copy_annot)
-                        print(f'프레임 {json_data["frame_no"]}: 객체 {id}의 오브젝트를 복사..')
-                        break
-            
-            with open(self.json_list[idx], 'w') as f:
-                json.dump(json_data, f, indent=4)
-        print("----------------------------------------------------")
-
-    def copy_annotation(self, annot, copy_annot):
-        for key in copy_annot.keys():
-            annot[key] = copy_annot[key]
-        return annot
-
-
-
-    # make backup file
-    def makeBackup(self):
-        copied_file_count = 0
-        try:
-            if not os.path.exists(self.backupfolder):
-                os.mkdir(self.backupfolder)
-        except OSError:
-            print('Error: Creating directory of backup')
-            exit()
-
-        for idx in range(self.json_file_num):
-            shutil.copy(self.json_list[idx], self.backupfolder)
-            print(f'{self.json_list[idx]}을 백업파일로 만들었습니다.')
-            copied_file_count += 1
-
-        if copied_file_count == 0:
-            print('백업파일을 만들 수 없습니다.')
-            return 0
-        else:
-            print('{}개 파일 백업 완료'.format(copied_file_count))
-            print("----------------------------------------------------")    
-            return copied_file_count
-
-    # restore backup file
-    def restoreBackup(self) -> int:
-        backupFiles = glob.glob(self.backupfolder + '/*.json')
-        copied_file_count = 0
-        try:
-            if not os.path.exists(self.backupfolder):
-                print('백업파일이 없습니다.')
-                return False
-        # if backup folder is not exist
-        except OSError:
-            print('Error: backup folder is not exist')
-            return False
-
-        for file in backupFiles:
-            #shutil.copy(self.backupfolder + '/' + self.json_list[idx].split('\\')[-1], self.json_list[idx])
-            shutil.copy(file, self.filepath)
-            print(f'{file}을 백업파일로 복원했습니다.')
-            copied_file_count += 1
-        
-        if copied_file_count == 0:
-            print('백업파일이 없습니다.')
-            return 0
-        else:
-            print('{}개 파일 복원 완료'.format(copied_file_count))
-            print("----------------------------------------------------")    
-            return copied_file_count
 
 # show the window
 class MyApp(QMainWindow):
@@ -299,20 +19,6 @@ class MyApp(QMainWindow):
         self.resize(600, 400)
         self.center()
         self.statusBarMessage()      
-
-        # 창 닫기 버튼 생성
-        # btn = QPushButton('Close', self)
-        # btn.clicked.connect(QApplication.instance().quit)
-        # btn.move(300, 350)
-        # hbox = QHBoxLayout()
-        # hbox.addStretch(1)
-        # hbox.addWidget(btn)
-        # hbox.addStretch(1)
-        # vbox = QVBoxLayout()
-        # vbox.addStretch(1)
-        # vbox.addLayout(hbox)
-        # vbox.addStretch(1)
-        # self.setLayout(vbox)
 
         # # 파일 경로 입력 버튼 생성
         # inputDiButton = QPushButton('파일 경로 입력', self)
@@ -340,22 +46,22 @@ class MyApp(QMainWindow):
         restoreButton.clicked.connect(self.restore)
 
         # 1. 객체 아이디 확인 버튼 생성
-        checkObjIdButton = QPushButton('1. 아이디 확인', self)
+        checkObjIdButton = QPushButton('아이디 확인', self)
         checkObjIdButton.move(50, 100)
         checkObjIdButton.clicked.connect(self.checkObjectId)
 
         # 2. 객체 아이디 변경 버튼 생성
-        changeObjIdButton = QPushButton('2. 아이디 변경', self)
+        changeObjIdButton = QPushButton('아이디 변경', self)
         changeObjIdButton.move(50, 150)
         changeObjIdButton.clicked.connect(self.changeObjectId)
         
         # 3. 객체 박스 크기 변경 버튼 생성
-        changeDimButton = QPushButton('3. 박스 크기 변경', self)
+        changeDimButton = QPushButton('박스 크기 변경', self)
         changeDimButton.move(50, 200)
         changeDimButton.clicked.connect(self.changeDimension)
 
         # 4. 객체 박스 각도 변경 버튼 생성
-        changeDegreeButton = QPushButton('4. 각도 변경', self)
+        changeDegreeButton = QPushButton('각도 변경', self)
         changeDegreeButton.move(50, 250)
         changeDegreeButton.clicked.connect(self.changeAngle)
 
@@ -365,24 +71,29 @@ class MyApp(QMainWindow):
         # changeBugIdButton.clicked.connect(self.changeBugId)
         
         # 6. 불러오기 확인 버튼 생성
-        checkLoadingFiles = QPushButton('5. 불러오기 확인', self)
+        checkLoadingFiles = QPushButton('불러오기 확인', self)
         checkLoadingFiles.move(150, 100)
         checkLoadingFiles.clicked.connect(self.checkLoadingFiles)
         
         # 7. 카테고리 수정 버튼 생성
-        changeCategoryButton = QPushButton('6. 카테고리 수정', self)
+        changeCategoryButton = QPushButton('카테고리 수정', self)
         changeCategoryButton.move(150, 150)
         changeCategoryButton.clicked.connect(self.changeCategory)
         
         # 8. 파일 자동 생성 버튼 생성
-        autoMakeFiles = QPushButton('7. 파일 자동 생성', self)
+        autoMakeFiles = QPushButton('파일 자동 생성', self)
         autoMakeFiles.move(150, 200)
         autoMakeFiles.clicked.connect(self.autoMakeFiles)
         
         # 9. 객체 복사 버튼 생성
-        copyObjectButton = QPushButton('8. 객체 복사', self)
+        copyObjectButton = QPushButton('객체 복사', self)
         copyObjectButton.move(150, 250)
         copyObjectButton.clicked.connect(self.copyObject)
+        
+        # 10. 파일명 최신화 버튼 생성
+        refreshFileNameButton = QPushButton('파일명 최신화', self)
+        refreshFileNameButton.move(150, 300)
+        refreshFileNameButton.clicked.connect(self.refreshFileName)
         
         # # 10 파일명 통일 기능 버튼 생성
         # renameFileNameButton = QPushButton('9. 파일명 통일', self)
@@ -412,7 +123,7 @@ class MyApp(QMainWindow):
                 self.statusBarMessage('파일 구성이 잘못되었거나 json파일이 없습니다.')
             first_file_num = int(first_file.split('_')[-1].split('.')[0])
             extra_file_name = '_'.join(first_file.split('_')[:-1])
-            for idx in range(1, 101):
+            for idx in range(1, 100 +1):
                 cur_file = r'{}_{:03d}.json'.format(extra_file_name, idx)
                 old_file = r'{}_{:04d}.json'.format(extra_file_name, idx)
                 if os.path.isfile(old_file):
@@ -427,6 +138,7 @@ class MyApp(QMainWindow):
                         json.dump(json_data, f, indent=4)
                         print('{} 파일 생성 완료'.format(cur_file))
         self.editResult.set_json_list(self.filepath)
+        print('----------------------------------------------------')
         return True
                         
     # 10. 파일명 통일 기능 버튼 생성
@@ -446,7 +158,7 @@ class MyApp(QMainWindow):
         else:
             file_list = glob.glob(self.filepath + r'\*.json')
             file_list.sort()
-            self.editResult.set_json_list(file_list)
+            self.editResult.set_json_list(self.filepath)
             print("파일 개수 : {}".format(len(file_list)))
             with open(file_list[0], 'r') as f:
                 json_data = json.load(f) # json 데이터 불러옴
@@ -463,18 +175,38 @@ class MyApp(QMainWindow):
                 print(f'{self.filepath}에서 시작합니다.')
                 self.statusBar().showMessage(f'{self.filepath}에서 시작합니다.')
                 self.editResult = EditLabel(self.filepath)
+                self.analyzeLabel = AnalyzeLabel(self.filepath)
             else:
                 print('잘못된 경로입니다. 경로를 다시 설정해주세요.')
                 self.statusBar().showMessage('잘못된 경로입니다. 경로를 다시 설정해주세요.')
         except:
             print('잘못된 경로입니다. 경로를 다시 설정해주세요.')
             self.statusBar().showMessage('잘못된 경로입니다. 경로를 다시 설정해주세요.')
+    
+    # 파일명 일괄 수정
+    def refreshFileName(self):
+        if self.filepath is None:
+            self.statusBarMessage('파일 경로를 설정하세요.')
+            print('파일 경로를 설정하세요.')
+            return
+        extract_path = '/'.join(self.analyzeLabel.clip_path.split('/')[:-1])
+        # create clip list only is folder
+        clip_list = os.listdir(extract_path)
+        clip_list.sort()
+
+        clip_list_path = [os.path.join(extract_path, clip_) for clip_ in clip_list if os.path.isdir(os.path.join(extract_path, clip_))]
+        for clip in clip_list_path:
+            self.analyzeLabel.fix_filenames(clip)
+        self.editResult.set_json_list(self.filepath) # result 경로 파일 목록 새로고침
+        print('----------------------------------------------------')
+        
+        
 
     # 상태 바 메세지 출력
     def statusBarMessage(self, message = None):
         if message is None:
-            self.statusBar().showMessage('경로 설정 안됨')
-            print('경로 설정 안됨')
+            self.statusBar().showMessage('경로를 설정하세요.')
+            print('경로를 설정하세요.')
         else:
             self.statusBar().showMessage(message)
     
@@ -499,7 +231,8 @@ class MyApp(QMainWindow):
     # 0. 파일 백업
     def backup(self):
         if self.filepath is None:
-            self.statusBarMessage('파일 경로 설정 안됨')
+            self.statusBarMessage('파일 경로를 설정하세요.')
+            print('파일 경로를 설정하세요.')
             return
         else:
             self.editResult.makeBackup()
@@ -507,12 +240,14 @@ class MyApp(QMainWindow):
 
     def restore(self):
         if self.filepath is None:
-            self.statusBarMessage('파일 경로 설정 안됨')
+            self.statusBarMessage('파일 경로를 설정하세요.')
+            print('파일 경로를 설정하세요.')
             return
         else:
             count = self.editResult.restoreBackup()
             if count == 0:
                 self.statusBarMessage('백업 파일이 없습니다.')
+                print('백업 파일이 없습니다.')
             else:
                 self.statusBarMessage('{}개 파일 복원 완료'.format(count))
 
@@ -520,6 +255,7 @@ class MyApp(QMainWindow):
     def checkObjectId(self):
         if self.filepath is None:
             self.statusBarMessage('파일 경로를 설정하세요.')
+            print('파일 경로를 설정하세요.')
             return
         else:
             objId, ok = QInputDialog.getText(self, '객체 아이디 확인', '확인하려는 객체 아이디를 입력하세요:')
