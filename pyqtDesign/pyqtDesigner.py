@@ -463,7 +463,7 @@ class Ui_MainWindow(object):
         self.pushButton_3.setText(_translate("MainWindow", "파일명 최신화(최종)"))
         self.pushButton_13.setText(_translate("MainWindow", "최신화 여부 체크"))
         self.pushButton_2.setText(_translate("MainWindow", "빈 레이블 파일 생성"))
-        self.tabWidget_4.setTabText(self.tabWidget_4.indexOf(self.tab_2), _translate("MainWindow", "Tab 1"))
+        self.tabWidget_4.setTabText(self.tabWidget_4.indexOf(self.tab_2), _translate("MainWindow", "파일 관리"))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_3), _translate("MainWindow", "오류 수정"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Tab 1"))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_7), _translate("MainWindow", "레이블링 결과물 검수"))

@@ -11,7 +11,7 @@ import numpy as np
 class MyApp(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.filepath = None
+        self.resultPath = None
         self.initUI()
 
     def initUI(self):
@@ -110,11 +110,11 @@ class MyApp(QMainWindow):
     
     # 8. 파일 자동 생성 버튼 생성    
     def autoMakeFiles(self):
-        if self.filepath is None:
+        if self.resultPath is None:
             self.statusBarMessage('파일 경로를 설정하세요.')
             return False
         else:
-            file_list = glob.glob(self.filepath + r'\*.json')
+            file_list = glob.glob(self.resultPath + r'\*.json')
             file_list.sort()
             try:
                 first_file = file_list[0]
@@ -137,13 +137,13 @@ class MyApp(QMainWindow):
                     with open(cur_file, 'w') as f:
                         json.dump(json_data, f, indent=4)
                         print('{} 파일 생성 완료'.format(cur_file))
-        self.editResult.set_json_list(self.filepath)
+        self.editResult.set_json_list(self.resultPath)
         print('----------------------------------------------------')
         return True
                         
     # 10. 파일명 통일 기능 버튼 생성
     def renameFileName(self):
-        if self.filepath is None:
+        if self.resultPath is None:
             self.statusBarMessage('파일 경로를 설정하세요.')
             print('파일 경로를 설정하세요.')
             return False
@@ -151,14 +151,14 @@ class MyApp(QMainWindow):
     
     # 6. 불러오기 확인
     def checkLoadingFiles(self)->bool:
-        if self.filepath is None:
+        if self.resultPath is None:
             self.statusBarMessage('파일 경로를 설정하세요.')
             print('파일 경로를 설정하세요.')
             return False
         else:
-            file_list = glob.glob(self.filepath + r'\*.json')
+            file_list = glob.glob(self.resultPath + r'\*.json')
             file_list.sort()
-            self.editResult.set_json_list(self.filepath)
+            self.editResult.set_json_list(self.resultPath)
             print("파일 개수 : {}".format(len(file_list)))
             with open(file_list[0], 'r') as f:
                 json_data = json.load(f) # json 데이터 불러옴
@@ -171,11 +171,11 @@ class MyApp(QMainWindow):
         filepath = str(QFileDialog.getExistingDirectory(self, 'Open Folder', './'))
         try:
             if os.path.isfile(glob.glob(filepath + r'\*.json')[0]) or not (filepath == '' or filepath == None):
-                self.filepath = filepath
-                print(f'{self.filepath}에서 시작합니다.')
-                self.statusBar().showMessage(f'{self.filepath}에서 시작합니다.')
-                self.editResult = EditLabel(self.filepath)
-                self.analyzeLabel = AnalyzeLabel(self.filepath)
+                self.resultPath = filepath
+                print(f'{self.resultPath}에서 시작합니다.')
+                self.statusBar().showMessage(f'{self.resultPath}에서 시작합니다.')
+                self.editResult = EditLabel(self.resultPath)
+                self.analyzeLabel = AnalyzeLabel(self.resultPath)
             else:
                 print('잘못된 경로입니다. 경로를 다시 설정해주세요.')
                 self.statusBar().showMessage('잘못된 경로입니다. 경로를 다시 설정해주세요.')
@@ -185,7 +185,7 @@ class MyApp(QMainWindow):
     
     # 파일명 일괄 수정
     def refreshFileName(self):
-        if self.filepath is None:
+        if self.resultPath is None:
             self.statusBarMessage('파일 경로를 설정하세요.')
             print('파일 경로를 설정하세요.')
             return
@@ -197,7 +197,7 @@ class MyApp(QMainWindow):
         clip_list_path = [os.path.join(extract_path, clip_) for clip_ in clip_list if os.path.isdir(os.path.join(extract_path, clip_))]
         for clip in clip_list_path:
             self.analyzeLabel.fix_filenames(clip)
-        self.editResult.set_json_list(self.filepath) # result 경로 파일 목록 새로고침
+        self.editResult.set_json_list(self.resultPath) # result 경로 파일 목록 새로고침
         print('----------------------------------------------------')
         
         
@@ -222,15 +222,15 @@ class MyApp(QMainWindow):
         # check if the filepath is valid
         if ok and os.path.isfile(glob.glob(filepath + r'\*.json')[0]):
             self.statusBarMessage(filepath)
-            self.filepath = filepath
-            self.editResult = EditLabel(self.filepath)
+            self.resultPath = filepath
+            self.editResult = EditLabel(self.resultPath)
         else:
             self.statusBarMessage('파일 경로 오류')
-            self.filepath = None
+            self.resultPath = None
 
     # 0. 파일 백업
     def backup(self):
-        if self.filepath is None:
+        if self.resultPath is None:
             self.statusBarMessage('파일 경로를 설정하세요.')
             print('파일 경로를 설정하세요.')
             return
@@ -239,7 +239,7 @@ class MyApp(QMainWindow):
             self.statusBarMessage('파일 백업 완료')
 
     def restore(self):
-        if self.filepath is None:
+        if self.resultPath is None:
             self.statusBarMessage('파일 경로를 설정하세요.')
             print('파일 경로를 설정하세요.')
             return
@@ -253,7 +253,7 @@ class MyApp(QMainWindow):
 
     # 1. 객체 아이디 확인
     def checkObjectId(self):
-        if self.filepath is None:
+        if self.resultPath is None:
             self.statusBarMessage('파일 경로를 설정하세요.')
             print('파일 경로를 설정하세요.')
             return
@@ -286,7 +286,7 @@ class MyApp(QMainWindow):
         CATEGORY_1 = {1: 'MEDIAN_STRIP', 2: 'SOUND_BARRIER', 3: 'OVERPASS', 
                       4: 'RAMP_SECT', 5:'ROAD_SIGN', 6: 'STREET_TREES', 7: 'TUNNEL'}
         
-        if self.filepath is None:
+        if self.resultPath is None:
             self.statusBarMessage('파일 경로를 설정하세요.')
             return False
         else:
@@ -331,12 +331,12 @@ class MyApp(QMainWindow):
 
     # 9. 객체 복사 버튼 생성
     def copyObject(self):
-        if self.filepath is None:
+        if self.resultPath is None:
             self.statusBarMessage('파일 경로를 설정하세요.')
             return False
         else:
             print("복사 기능 사용 전에 백업을 권장합니다.")
-            file_list = glob.glob(self.filepath + '/*.json')
+            file_list = glob.glob(self.resultPath + '/*.json')
             if len(file_list) < 100:
                 print("파일이 100개 미만입니다. 누락된 파일을 확인하세요.")
                 self.statusBarMessage('파일이 100개 미만입니다. 누락된 파일을 확인하세요.')
@@ -388,7 +388,7 @@ class MyApp(QMainWindow):
 
     # 2. 객체 아이디 변경 버튼
     def changeObjectId(self):
-        if self.filepath is None:
+        if self.resultPath is None:
             self.statusBarMessage('파일 경로를 설정하세요.')
             return
         else:
@@ -411,7 +411,7 @@ class MyApp(QMainWindow):
     
     # 3. 객체 박스 크기 변경 버튼
     def changeDimension(self):
-        if self.filepath is None:
+        if self.resultPath is None:
             self.statusBarMessage('파일 경로를 설정하세요.')
             return
         else:
@@ -431,7 +431,7 @@ class MyApp(QMainWindow):
 
     # 4. 객체 박스 각도 변경 버튼
     def changeAngle(self):
-        if self.filepath is None:
+        if self.resultPath is None:
             self.statusBarMessage('파일 경로를 설정하세요.')
             return
         else:
@@ -457,7 +457,7 @@ class MyApp(QMainWindow):
 
     # 5. 버그 아이디 변경 버튼
     def changeBugId(self):
-        if self.filepath is None:
+        if self.resultPath is None:
             self.statusBarMessage('파일 경로를 설정하세요.')
             return
         else:

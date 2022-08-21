@@ -19,7 +19,8 @@ class MainWindow(QMainWindow):
 
     # 메인 윈도우 이벤트
     def mainWindowEvent(self):
-        self.ui.comboboxPushButton.clicked.connect(self.comboboxButton)
+        #self.ui.comboboxPushButton.clicked.connect(self.comboboxButton)
+        pass
 
     # 콤보박스 내용 사전으로 초기화
     def comboboxInit(self):
