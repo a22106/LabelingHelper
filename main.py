@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QApplication,QPushButton, QMainWindow, \
 from editLabel import EditLabel
 from analyzeLabel import AnalyzeLabel
         
-import glob, json, os, math, copy, shutil
+import glob, json, os
 import numpy as np
 
 # show the window

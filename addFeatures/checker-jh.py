@@ -3,7 +3,7 @@ import glob
 import time
 
 # 최상위폴더 경로
-root_path = r'D:\data_48\20220818_02_track'
+root_path = r'D:\Documents\GitHub\LabelingHelper\addFeatures\rejecter_0819\extract_2022-08-02-18-18-53'
 clips_path = glob.glob(os.path.join(root_path, '*', '*'))
 
 for clip in clips_path:
