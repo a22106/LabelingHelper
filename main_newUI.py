@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QApplication,QPushButton, QMainWindow, \
     QAction, QInputDialog, QDesktopWidget, QFileDialog
 from editLabel import EditLabel
 from analyzeLabel import AnalyzeLabel
+import analyzeLabel
 from pyqtDesign.pyqtDesigner import Ui_MainWindow
 
 import glob, json, os, time
@@ -13,6 +14,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.saveOpendFolder = './'
         self.pathInit()
+        
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         #self.setWindowTitle("json파일 편집 프로그램")
@@ -75,22 +77,23 @@ class MainWindow(QMainWindow):
     
     # 파일명 일괄 수정
     def refreshFileName(self):
-        if self.inputPath is None:
-            self.statusBarMessage('클립 경로를 설정하세요.')
-            self.printText('클립 경로를 설정하세요.')
-            return
-        extract_path = os.path.dirname(self.analyzeLabel.clipPath)
-        
-        # create clip list only is folder
-        clip_list = os.listdir(extract_path)
-        clip_list.sort()
+        extract_path = self.ui.lineEdit.text()
 
-        clip_list_path = [os.path.join(extract_path, clip_) for clip_ in clip_list if os.path.isdir(os.path.join(extract_path, clip_))]
-        for clip in clip_list_path:
-            self.analyzeLabel.fix_filenames(clip)
-        self.editLabel.setPath(self.inputPath) # result 경로 파일 목록 새로고침
-        self.printText('파일명 일괄 수정 완료')
-        self.printText('----------------------------------------------------')
+        # extract_path = os.path.dirname(self.analyzeLabel.clipPath)
+        if extract_path:
+            self.analyzeLabel = AnalyzeLabel(extractPath=extract_path)
+            clipPathList = glob.glob(self.analyzeLabel.extractPath + r'\*')
+            clipPathList.sort()
+            self.analyzeLabel.clipPathList = clipPathList
+
+            for clip in clipPathList:
+                self.analyzeLabel.fix_filenames(clip)
+            # self.editLabel.setPath(self.inputPath) # result 경로 파일 목록 새로고침
+            self.printText('파일명 일괄 수정 완료')
+            self.printText('----------------------------------------------------')
+        else:
+            self.printText('잘못된 경로입니다. 경로를 다시 설정해주세요.')
+            self.statusBar().showMessage('잘못된 경로입니다. 경로를 다시 설정해주세요.')
     
     def center(self):
         qr = self.frameGeometry()
@@ -167,17 +170,7 @@ class MainWindow(QMainWindow):
             return
         else:
             objId = self.ui.spinBoxfromIdchange.value()
-            try:
-                objId = int(objId)
-            except:
-                self.statusBarMessage('잘못된 객체 아이디입니다.')
-                return
             changedId = self.ui.spinBoxToIdchange.value()
-            try:
-                changedId = int(changedId)
-            except:
-                self.statusBarMessage('잘못된 객체 아이디입니다.')
-                return
             if objId and changedId:
                 
                 self.editLabel.changeId(objId, changedId)
@@ -218,6 +211,7 @@ class MainWindow(QMainWindow):
                 self.statusBarMessage('잘못된 각도입니다.')
                 return
             if objId and angle>=0:
+
                 self.editLabel.changeAngle(objId, angle)
                 self.printText('객체 아이디 {}의 박스 각도를 {}도로 변경'.format(objId, angle))
                 self.statusBar().showMessage('객체 아이디 {}의 박스 각도를 {}도로 변경'.format(objId, angle))
@@ -396,19 +390,19 @@ class MainWindow(QMainWindow):
             
             # calib 체크
             lc_cal_dist = os.path.join(clip, 'calib', 'Lidar_camera_calib',
-                                    f'481_ND_{clip_num}_LCC_CF.txt')
+                                    f'2-048_{clip_num}_LCC_CF.txt')
             lr_cal_dist = os.path.join(clip, 'Calib', 'Lidar_radar_calib', 
-                                    f'481_ND_{clip_num}_LRC_RF.txt')
+                                    f'2-048_{clip_num}_LRC_RF.txt')
             
             # 카메라, 라이다, 레이다 체크
             camera_dist = [os.path.join(clip, 'Camera', 'CameraFront', 'blur',
-                                        f'481_ND_{clip_num}_CF_{str(i):0>3s}.png')
+                                        f'2-048_{clip_num}_CF_{str(i):0>3s}.png')
                         for i in range(1, 101)]
             lidar_dist = [os.path.join(clip, 'Lidar',
-                                    f'481_ND_{clip_num}_LR_{str(i):0>3s}.pcd')
+                                    f'2-048_{clip_num}_LR_{str(i):0>3s}.pcd')
                         for i in range(1, 101)]
             radar_dist = [os.path.join(clip, 'Radar', 'RadarFront',
-                                    f'481_ND_{clip_num}_RF_{str(i):0>3s}.pcd')
+                                    f'2-048_{clip_num}_RF_{str(i):0>3s}.pcd')
                         for i in range(1, 101)]
             
             lc_cal = os.path.exists(lc_cal_dist)
@@ -448,7 +442,7 @@ class MainWindow(QMainWindow):
         self.ui.pushButton.clicked.connect(self.changeDimension)
         self.ui.pushButton_7.clicked.connect(self.changeAngle)
         self.ui.pushButton_8.clicked.connect(self.copyObject)
-        self.ui.pushButton_3.clicked.connect(self.refreshFileName)
+        self.ui.pushButton_3.clicked.connect(self.refreshFileName) # 폴더명 최신화
         self.ui.pushButton_2.clicked.connect(self.autoMakeFiles)
         self.ui.pushButton_13.clicked.connect(self.checkIfFileRefreshedOld)
         # self.ui.pushButton_12.clicked.connect(self.autoMakeFilesOld)

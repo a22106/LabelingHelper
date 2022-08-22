@@ -3,7 +3,7 @@ from pyqtDesign.pyqtDesigner import Ui_MainWindow
 
 
 class EditLabel():
-    def __init__(self, inputPath:str = None):
+    def __init__(self, inputPath:str):
         inputPath = inputPath.replace('\\', '/')
         self.setPath(inputPath)
         
@@ -117,17 +117,17 @@ class EditLabel():
                         #print(f'{self.json_list[idx]}에 변경 완료')
         print("----------------------------------------------------")    
 
-    # change angle
+    # change Angle
     def changeAngle(self, id, angle):
         for idx in range(self.resultNum):
             with open(self.resultList[idx], 'r') as f:
                 json_data = json.load(f) # json 데이터 불러옴
-            angle = float(angle) # 변경할 크기
+            
             # change degree to radian
             angle_rad = math.radians(angle)
 
             for annot in json_data['annotation']:
-                if annot['id'] == f'{id}' or annot['id'] == id:
+                if int(annot['id']) == id:
                     annot['3d_box'][0]['rotation_y'] = angle_rad
                     print(f'프레임 {json_data["frame_no"]}: {id}의 각도를 {angle}로 변경')
                     with open(self.resultList[idx], 'w') as f:
