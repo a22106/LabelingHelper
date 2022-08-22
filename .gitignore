@@ -7,3 +7,4 @@ dist/
 ./test.ipynb
 *.spec
 *.pdf
+file_name_changer*

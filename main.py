@@ -189,7 +189,7 @@ class MyApp(QMainWindow):
             self.statusBarMessage('파일 경로를 설정하세요.')
             print('파일 경로를 설정하세요.')
             return
-        extract_path = '/'.join(self.analyzeLabel.clip_path.split('/')[:-1])
+        extract_path = '/'.join(self.analyzeLabel.clipPath.split('/')[:-1])
         # create clip list only is folder
         clip_list = os.listdir(extract_path)
         clip_list.sort()

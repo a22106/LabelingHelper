@@ -14,11 +14,11 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(801, 513)
+        MainWindow.resize(871, 513)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
-        self.textBrowser.setGeometry(QtCore.QRect(0, 280, 801, 192))
+        self.textBrowser.setGeometry(QtCore.QRect(0, 280, 871, 192))
         self.textBrowser.setObjectName("textBrowser")
         self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_4.setGeometry(QtCore.QRect(10, 10, 91, 31))
@@ -31,12 +31,12 @@ class Ui_MainWindow(object):
         self.pushButton_6.setGeometry(QtCore.QRect(10, 240, 91, 31))
         self.pushButton_6.setObjectName("pushButton_6")
         self.tabWidget_2 = QtWidgets.QTabWidget(self.centralwidget)
-        self.tabWidget_2.setGeometry(QtCore.QRect(110, 0, 691, 271))
+        self.tabWidget_2.setGeometry(QtCore.QRect(110, 0, 761, 271))
         self.tabWidget_2.setObjectName("tabWidget_2")
         self.tab_6 = QtWidgets.QWidget()
         self.tab_6.setObjectName("tab_6")
         self.tabWidget_3 = QtWidgets.QTabWidget(self.tab_6)
-        self.tabWidget_3.setGeometry(QtCore.QRect(0, 10, 681, 241))
+        self.tabWidget_3.setGeometry(QtCore.QRect(0, 10, 761, 241))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -102,11 +102,13 @@ class Ui_MainWindow(object):
         self.label_7.setObjectName("label_7")
         self.gridLayout.addWidget(self.label_7, 2, 1, 1, 1)
         self.spinBoxfromIdchangeFrame = QtWidgets.QSpinBox(self.gridLayoutWidget)
+        self.spinBoxfromIdchangeFrame.setEnabled(False)
         self.spinBoxfromIdchangeFrame.setMinimum(1)
         self.spinBoxfromIdchangeFrame.setMaximum(100)
         self.spinBoxfromIdchangeFrame.setObjectName("spinBoxfromIdchangeFrame")
         self.gridLayout.addWidget(self.spinBoxfromIdchangeFrame, 3, 0, 1, 1)
         self.spinBoxToIdchangeFrame = QtWidgets.QSpinBox(self.gridLayoutWidget)
+        self.spinBoxToIdchangeFrame.setEnabled(False)
         self.spinBoxToIdchangeFrame.setMinimum(1)
         self.spinBoxToIdchangeFrame.setMaximum(100)
         self.spinBoxToIdchangeFrame.setProperty("value", 100)
@@ -125,7 +127,7 @@ class Ui_MainWindow(object):
         self.textBrowser_3.setGeometry(QtCore.QRect(0, 0, 381, 211))
         self.textBrowser_3.setObjectName("textBrowser_3")
         self.gridLayoutWidget_2 = QtWidgets.QWidget(self.tab_10)
-        self.gridLayoutWidget_2.setGeometry(QtCore.QRect(410, 10, 237, 141))
+        self.gridLayoutWidget_2.setGeometry(QtCore.QRect(410, 10, 334, 141))
         self.gridLayoutWidget_2.setObjectName("gridLayoutWidget_2")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.gridLayoutWidget_2)
         self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -152,11 +154,13 @@ class Ui_MainWindow(object):
         self.label_12.setObjectName("label_12")
         self.gridLayout_2.addWidget(self.label_12, 2, 1, 1, 1)
         self.spinBoxfromIdCategoryFrame = QtWidgets.QSpinBox(self.gridLayoutWidget_2)
+        self.spinBoxfromIdCategoryFrame.setEnabled(False)
         self.spinBoxfromIdCategoryFrame.setMinimum(1)
         self.spinBoxfromIdCategoryFrame.setMaximum(100)
         self.spinBoxfromIdCategoryFrame.setObjectName("spinBoxfromIdCategoryFrame")
         self.gridLayout_2.addWidget(self.spinBoxfromIdCategoryFrame, 3, 0, 1, 1)
         self.spinBoxToIdCategoryFrame = QtWidgets.QSpinBox(self.gridLayoutWidget_2)
+        self.spinBoxToIdCategoryFrame.setEnabled(False)
         self.spinBoxToIdCategoryFrame.setMinimum(1)
         self.spinBoxToIdCategoryFrame.setMaximum(100)
         self.spinBoxToIdCategoryFrame.setProperty("value", 100)
@@ -164,6 +168,10 @@ class Ui_MainWindow(object):
         self.gridLayout_2.addWidget(self.spinBoxToIdCategoryFrame, 3, 1, 1, 1)
         self.comboBox = QtWidgets.QComboBox(self.gridLayoutWidget_2)
         self.comboBox.setObjectName("comboBox")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
@@ -221,6 +229,7 @@ class Ui_MainWindow(object):
         self.pushButton.setObjectName("pushButton")
         self.gridLayout_3.addWidget(self.pushButton, 4, 0, 1, 1)
         self.doubleSpinBox_4 = QtWidgets.QDoubleSpinBox(self.gridLayoutWidget_3)
+        self.doubleSpinBox_4.setMaximum(359.0)
         self.doubleSpinBox_4.setObjectName("doubleSpinBox_4")
         self.gridLayout_3.addWidget(self.doubleSpinBox_4, 4, 2, 1, 1)
         self.pushButton_7 = QtWidgets.QPushButton(self.gridLayoutWidget_3)
@@ -296,6 +305,7 @@ class Ui_MainWindow(object):
         self.textBrowser_6.setGeometry(QtCore.QRect(0, 0, 411, 211))
         self.textBrowser_6.setObjectName("textBrowser_6")
         self.pushButton_12 = QtWidgets.QPushButton(self.tab_2)
+        self.pushButton_12.setEnabled(False)
         self.pushButton_12.setGeometry(QtCore.QRect(490, 70, 131, 31))
         self.pushButton_12.setObjectName("pushButton_12")
         self.pushButton_3 = QtWidgets.QPushButton(self.tab_2)
@@ -318,9 +328,12 @@ class Ui_MainWindow(object):
         self.tab.setObjectName("tab")
         self.tabWidget.addTab(self.tab, "")
         self.tabWidget_2.addTab(self.tab_7, "")
+        self.pushButton_14 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_14.setGeometry(QtCore.QRect(10, 160, 91, 31))
+        self.pushButton_14.setObjectName("pushButton_14")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 801, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 871, 21))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
@@ -337,8 +350,8 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuFile.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.tabWidget_2.setCurrentIndex(1)
-        self.tabWidget_3.setCurrentIndex(1)
+        self.tabWidget_2.setCurrentIndex(0)
+        self.tabWidget_3.setCurrentIndex(0)
         self.tabWidget_4.setCurrentIndex(0)
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -350,7 +363,7 @@ class Ui_MainWindow(object):
         self.pushButton_5.setText(_translate("MainWindow", "파일 백업"))
         self.pushButton_6.setText(_translate("MainWindow", "백업 불러오기"))
         self.label_2.setText(_translate("MainWindow", "확인하려는 객체 아이디를 입력해주세요."))
-        self.pushButton_11.setText(_translate("MainWindow", "수정"))
+        self.pushButton_11.setText(_translate("MainWindow", "확인"))
         self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_8), _translate("MainWindow", "객체 확인"))
         self.label_8.setText(_translate("MainWindow", "수정 범위(1 ~ 100 프레임)"))
         self.label_10.setText(_translate("MainWindow", "ex1) 10, 100 -> 10 ~ 100 프레임 내 객체 아이디 일괄수정"))
@@ -362,41 +375,45 @@ class Ui_MainWindow(object):
         self.textBrowser_2.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">객체 아이디를 일괄수정하는 기능</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">수정할 객체가 수정될 숫자로 일괄 변경됩니다.</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">ex) 입력(1, 3): 객체 ID 1 -&gt; 3 일괄 변경</p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">수정 범위(1 ~ 100 프레임) 프레임 범위만큼의 아이디가 일괄수정됩니다.</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">수정할 범위내의 객체만 변경할 수 있습니다.</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">ex1) 10, 100 -&gt; 10 ~ 100 프레임 내 객체 아이디 일괄수정</p></body></html>"))
+"</style></head><body style=\" font-family:\'Gulim\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">객체 아이디를 일괄수정하는 기능</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">수정할 객체가 수정될 숫자로 일괄 변경됩니다.</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">ex) 입력(1, 3): 객체 ID 1 -&gt; 3 일괄 변경</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">수정 범위(1 ~ 100 프레임) 프레임 범위만큼의 아이디가 일괄수정됩니다.</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">수정할 범위내의 객체만 변경할 수 있습니다.</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">ex1) 10, 100 -&gt; 10 ~ 100 프레임 내 객체 아이디 일괄수정</span></p></body></html>"))
         self.pushButton_10.setText(_translate("MainWindow", "수정"))
         self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_9), _translate("MainWindow", "아이디 수정"))
         self.textBrowser_3.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">수정하려는 객체의 카테고리를 일괄수정하는 기능입니다.</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">객체의 종류만 선택하면 나머지는 자동으로 설정됩니다.</p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">ex1) 객체 ID 1을 자동차로 수정 -&gt; 동적객체, Car</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">ex1) 객체 ID 2를 가로수로 수정 -&gt; 주행환경객체, 가로수, 정형객체</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">ex2) 객체 ID 3을 방음벽으로 수정 -&gt; 주행환경객체, 방음벽, 비정형객체</p></body></html>"))
-        self.label_5.setText(_translate("MainWindow", "수정될 숫자"))
+"</style></head><body style=\" font-family:\'Gulim\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">수정하려는 객체의 카테고리를 일괄수정하는 기능입니다.</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">객체의 종류만 선택하면 나머지는 자동으로 설정됩니다.</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">ex1) 객체 ID 1을 자동차로 수정 -&gt; 동적객체, Car</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">ex1) 객체 ID 2를 가로수로 수정 -&gt; 주행환경객체, 가로수, 정형객체</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">ex2) 객체 ID 3을 방음벽으로 수정 -&gt; 주행환경객체, 방음벽, 비정형객체</span></p></body></html>"))
+        self.label_5.setText(_translate("MainWindow", "카테고리 설정"))
         self.label_9.setText(_translate("MainWindow", "수정할 객체 ID"))
         self.label_11.setText(_translate("MainWindow", "첫 프레임"))
         self.label_12.setText(_translate("MainWindow", "마지막 프레임"))
-        self.comboBox.setItemText(0, _translate("MainWindow", "승용차(CAR)"))
-        self.comboBox.setItemText(1, _translate("MainWindow", "오토바이(MOTORCYCLE)"))
-        self.comboBox.setItemText(2, _translate("MainWindow", "버스(BUS)"))
-        self.comboBox.setItemText(3, _translate("MainWindow", "자전거(BICYCLE)"))
-        self.comboBox.setItemText(4, _translate("MainWindow", "트럭(TRUCK)"))
-        self.comboBox.setItemText(5, _translate("MainWindow", "보행자(PEDESTRIAN)"))
-        self.comboBox.setItemText(6, _translate("MainWindow", "특수차량(ETC)"))
-        self.comboBox.setItemText(7, _translate("MainWindow", "중앙분리대(MEDIAN_STRIP)"))
-        self.comboBox.setItemText(8, _translate("MainWindow", "육교(OVERPASS)"))
-        self.comboBox.setItemText(9, _translate("MainWindow", "램프구간(RAMP_SECT)"))
-        self.comboBox.setItemText(10, _translate("MainWindow", "고속도로 위 표지판(ROAD_SIGN)"))
+        self.comboBox.setItemText(0, _translate("MainWindow", "선택하세요"))
+        self.comboBox.setItemText(1, _translate("MainWindow", "승용차(CAR)"))
+        self.comboBox.setItemText(2, _translate("MainWindow", "트럭(TRUCK)"))
+        self.comboBox.setItemText(3, _translate("MainWindow", "보행자(PEDESTRIAN)"))
+        self.comboBox.setItemText(4, _translate("MainWindow", "오토바이(MOTORCYCLE)"))
+        self.comboBox.setItemText(5, _translate("MainWindow", "버스(BUS)"))
+        self.comboBox.setItemText(6, _translate("MainWindow", "자전거(BICYCLE)"))
+        self.comboBox.setItemText(7, _translate("MainWindow", "특수차량(ETC)"))
+        self.comboBox.setItemText(8, _translate("MainWindow", "중앙분리대(MEDIAN_STRIP)"))
+        self.comboBox.setItemText(9, _translate("MainWindow", "방음벽(SOUND_BARRIER)"))
+        self.comboBox.setItemText(10, _translate("MainWindow", "육교(OVERPASS)"))
+        self.comboBox.setItemText(11, _translate("MainWindow", "램프구간(RAMP_SECT)"))
+        self.comboBox.setItemText(12, _translate("MainWindow", "고속도로 위 표지판(ROAD_SIGN)"))
+        self.comboBox.setItemText(13, _translate("MainWindow", "가로수(STREET_TRIEES)"))
+        self.comboBox.setItemText(14, _translate("MainWindow", "터널(TUNNEL)"))
         self.pushButton_9.setText(_translate("MainWindow", "수정"))
         self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_10), _translate("MainWindow", "카테고리 수정"))
         self.label_16.setText(_translate("MainWindow", "Length"))
@@ -405,22 +422,22 @@ class Ui_MainWindow(object):
         self.label_18.setText(_translate("MainWindow", "각도 ˚"))
         self.label_14.setText(_translate("MainWindow", "Width"))
         self.pushButton.setText(_translate("MainWindow", "수정"))
-        self.pushButton_7.setText(_translate("MainWindow", "180˚ 전환"))
+        self.pushButton_7.setText(_translate("MainWindow", "각도 수정"))
         self.textBrowser_4.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">1. 객체의 박스 크기를 수정합니다.</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">수치가 0이라면 해당 값은 변경하지 않습니다.</p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">ex) (W, H, L)</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">-  원래 박스 크기: 2, 2, 5</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">- 입력값:               2.5, 2.5, 0</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">- 변경된 값:          2.5, 2.5, 5</p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">2. 객체 박스의 각도를 수정합니다.</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">전방 12시 방향이 0˚이며, 반시계방향으로 각도가 커집니다.</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">현재 각도에서 180˚ 변경도 가능합니다.</p></body></html>"))
+"</style></head><body style=\" font-family:\'Gulim\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">1. 객체의 박스 크기를 수정합니다.</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">수치가 0이라면 해당 값은 변경하지 않습니다.</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">ex) (W, H, L)</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">-  원래 박스 크기: 2, 2, 5</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">- 입력값:               2.5, 2.5, 0</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">- 변경된 값:          2.5, 2.5, 5</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">2. 객체 박스의 각도를 수정합니다.</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">전방 12시 방향이 0˚이며, 반시계방향으로 각도가 커집니다.</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">현재 각도에서 180˚ 변경도 가능합니다.</span></p></body></html>"))
         self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_11), _translate("MainWindow", "박스 크기·각도 수정"))
         self.pushButton_8.setText(_translate("MainWindow", "수정"))
         self.label_21.setText(_translate("MainWindow", "붙여넣기 시작 프레임"))
@@ -430,43 +447,48 @@ class Ui_MainWindow(object):
         self.textBrowser_5.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">선택한 객체를 여러 프레임에 복사하는 기능입니다.</p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">복사하려는 객체의 아이디와 해당 객체가 있는 프레임 값을 넣고</p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">복사하려는 프레임의 범위를 정하여 붙여넣기합니다.</p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">복사할 때 해당 아이디를 가진</p></body></html>"))
+"</style></head><body style=\" font-family:\'Gulim\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">선택한 객체를 여러 프레임에 복사하는 기능입니다.</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">1. 복사하려는 객체의 아이디와 해당 객체가 있는 </span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">프레임 값을 입력해야합니다.</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">2. 복사하려는 프레임의 범위를 정합니다.</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">3. 범위 내 프레임의 같은 아이디 객체에 대해 </span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">붙여넣기 여부를 입력합니다.</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\"><br /></p></body></html>"))
         self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_12), _translate("MainWindow", "복사 붙여넣기"))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_6), _translate("MainWindow", "객체 수정"))
         self.textBrowser_6.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">- 레이블링 데이터 파일명을 최신화 하는 기능입니다.</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">최초로 받은 데이터 파일명을 최신화하기 위해서는</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">구버전 이후 최종 버튼을 눌러야합니다.</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">이미 구버전을 중간 버전 파일명으로 변환한 이후라면</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">최종 버전 버튼을 눌러 최신화 하면 됩니다.</p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">중간버전인지 구버전인지 구별하기 위해서는</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">해당 클립의 GNSS_INS 폴더의 파일이 event1인지 </p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">확인하면 되고, 해당된다면 구버전 파일명입니다.</p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">- 빈 레이블파일 생성 버튼은 레이블 되지 않은 json파일 100개를</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">result폴더에 채워줍니다. 생성된 파일명은 첫 파일명 규칙에 따라 생성됩니다.</p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">- 최신화 여부 체크 버튼은 하나의 상위폴더에 있는 여러 클립 내의 파일명이</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">제대로된 규칙에 따라 되어있는지 확인하기위한 기능입니다.</p></body></html>"))
+"</style></head><body style=\" font-family:\'Gulim\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">- 레이블링 데이터 파일명을 최신화 하는 기능입니다.</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">*관리자만 사용하기를 권장합니다.*</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">최초로 받은 데이터 파일명을 최신화하기 위해서는</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">구버전 이후 최종 버튼을 눌러야합니다.</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">이미 구버전을 중간 버전 파일명으로 변환한 이후라면</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">최종 버전 버튼을 눌러 최신화 하면 됩니다.</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">중간버전인지 구버전인지 구별하기 위해서는</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">해당 클립의 GNSS_INS 폴더의 파일이 event1인지 </span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">확인하면 되고, 해당된다면 구버전 파일명입니다.</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">- 빈 레이블파일 생성 버튼은 레이블 되지 않은 json파일 100개를</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">result폴더에 채워줍니다. 생성된 파일명은 첫 파일명 규칙에 따라 생성됩니다.</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">- 최신화 여부 체크 버튼은 하나의 상위폴더에 있는 여러 클립 내의 파일명이</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">제대로된 규칙에 따라 되어있는지 확인하기위한 기능입니다.</span></p></body></html>"))
         self.pushButton_12.setText(_translate("MainWindow", "파일명 최신화(구버전)"))
         self.pushButton_3.setText(_translate("MainWindow", "파일명 최신화(최종)"))
         self.pushButton_13.setText(_translate("MainWindow", "최신화 여부 체크"))
         self.pushButton_2.setText(_translate("MainWindow", "빈 레이블 파일 생성"))
-        self.tabWidget_4.setTabText(self.tabWidget_4.indexOf(self.tab_2), _translate("MainWindow", "파일 관리"))
+        self.tabWidget_4.setTabText(self.tabWidget_4.indexOf(self.tab_2), _translate("MainWindow", "Tab 1"))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_3), _translate("MainWindow", "오류 수정"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Tab 1"))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_7), _translate("MainWindow", "레이블링 결과물 검수"))
+        self.pushButton_14.setText(_translate("MainWindow", "result 압축풀기"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.actionLoad_Directory.setText(_translate("MainWindow", "Load Directory"))
         self.actionExit.setText(_translate("MainWindow", "Exit"))

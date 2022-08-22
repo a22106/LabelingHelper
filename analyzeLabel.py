@@ -7,31 +7,15 @@ class AnalyzeLabel(EditLabel):
         super().__init__(clipPath)
         '''
         부모 클래스 변수
-        - self.filepath: str - 클립 경로
+        - self.clipPath: str - 클립 경로
+        - self.resultPath: str - 레이블 폴더 경로
         - self.backupfolder: str - 백업 폴더 경로
-        - self.json_list: list - json 파일 리스트(result)
-        - self.json_file_num: int - json 파일 수
-        
-        현재 클래스의 변수
-        - self.clip_path: str - 클립 경로
-        - self.clip_name: str - 클립 이름
+        - self.resultList: list - json 파일 경로 리스트
+        - self.resultNum: int - json 파일 수
+        - self.clipName: str - 클립 이름
         '''
-        # clip_name: S_Clip_00000_01 ~ 17 or A_Clip_00000_01 ~ 17
-        self.clip_path, self.clip_name = self.set_path(clipPath)        
-        
-    def set_path(self, clipPath):
-        clipPath = clipPath.replace('\\', '/')
-        lastfoler = clipPath.split('/')[-1]
-        
-        if lastfoler == 'result':
-            clipPath = clipPath.replace(lastfoler, '')[:-1]
-            clipname = clipPath.split('/')[-1]
-        elif lastfoler[1:5] == '_Clip' or lastfoler[0:5] == 'Clip_':
-            clipname = clipPath.split('/')[-1]
-        else:
-            print('잘못된 경로입니다.')
-            return False
-        return clipPath, clipname
+        # self.clipName: S_Clip_00000_01 ~ 17 or A_Clip_00000_01 ~ 17
+            
     
     # 파일명 일괄수정
     def fix_filenames(self, clip_path = None):
@@ -47,8 +31,6 @@ class AnalyzeLabel(EditLabel):
         depth3_folders = ['lidar', 'gnss_ins', 'result'] # 추후에 result도 camera 파일명 정보대로 변경 기능 추가
         depth4_folders = ['radar', 'calib']
         depth5_folders = ['camera']
-
-        
         
         # depth2, depth3, depth4, depth5 폴더 이름
         
@@ -102,7 +84,7 @@ class AnalyzeLabel(EditLabel):
 
         spetical_case = False
         is_calib = False
-        clip_num = int(path.split('Clip_')[-1].split('_')[0]) # 00000 ~ 99999 클립 고유번호
+        clip_num = int(path.split('Clip_')[-1].split('_')[0].split('/')[0]) # 00000 ~ 99999 클립 고유번호
         if sensor_abb == 'LCC' or sensor_abb == 'LRC' or sensor_abb == 'RCC':
             is_calib = True
         
