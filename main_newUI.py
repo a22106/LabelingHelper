@@ -1,9 +1,8 @@
 import sys, zipfile
-from PyQt5.QtWidgets import QApplication,QPushButton, QMainWindow, \
-    QAction, QInputDialog, QDesktopWidget, QFileDialog
+from PyQt5.QtWidgets import QApplication, QMainWindow, \
+     QInputDialog, QDesktopWidget, QFileDialog
 from editLabel import EditLabel
 from analyzeLabel import AnalyzeLabel
-import analyzeLabel
 from pyqtDesign.pyqtDesigner import Ui_MainWindow
 
 import glob, json, os, time
@@ -84,6 +83,8 @@ class MainWindow(QMainWindow):
             self.analyzeLabel = AnalyzeLabel(extractPath=extract_path)
             clipPathList = glob.glob(self.analyzeLabel.extractPath + r'\*')
             clipPathList.sort()
+            # clipPathList에서 Clip 폴더만 추출
+            clipPathList = [clipPath for clipPath in clipPathList if 'Clip' in clipPath and os.path.isdir(clipPath)]
             self.analyzeLabel.clipPathList = clipPathList
 
             for clip in clipPathList:

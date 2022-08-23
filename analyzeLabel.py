@@ -27,7 +27,7 @@ class AnalyzeLabel():
         else:
             clip_listdir = os.listdir(self.clip_path)
         sensor_abb_dic = {'CameraFront': 'CF', 'CameraLeft': 'CL', 'CameraBack': 'CB', 'CameraRight':'CR',
-                        'RadarFront': 'RF', 'RadarFrontLeft': 'RFL', 'RadarFrontRight': 'RFR',
+                        'FrontCenter':'CF', 'RadarFront': 'RF', 'RadarFrontLeft': 'RFL', 'RadarFrontRight': 'RFR',
                         'RadarBackLeft': 'RBL', 'RadarBackRight': 'RBR', 'GNSS_INS': 'GI', 
                         'CameraRear': 'CR', 'Lidar_camera_calib': 'LCC', 'Lidar_radar_calib': 'LRC',
                         'Radar_camera_calib': 'RCC', 'result':'CF',
@@ -107,6 +107,8 @@ class AnalyzeLabel():
 
             if is_calib:
                 pass
+            elif file_name[:5] == 'event':
+                file_num = 1
             else:
                 file_num = int(file_name.split('_')[-1].split('.')[0])
             file_extension = file.split('.')[-1]
