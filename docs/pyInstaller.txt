@@ -1,0 +1,9 @@
+pyinstaller --clean -F main.py
+
+# pyinstaller <-configs> main.py
+# -F : 실행파일 하나만 생성
+# -w : 콘솔창 없는 프로그램 생성
+
+# create new env and `conda install conda-forge::numpy "blas=*=openblas"`
+
+#pyinstaller -F main.py --onedir

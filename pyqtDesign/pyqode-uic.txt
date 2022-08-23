@@ -1,0 +1,1 @@
+pyqode-uic --from-imports pyqtDesigner.ui -o pyqtDesigner.py
