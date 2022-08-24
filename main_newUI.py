@@ -437,18 +437,18 @@ class MainWindow(QMainWindow):
 
     def mainWindow(self):
         self.center()
-        self.ui.pushButton_4.clicked.connect(self.openFolder)
-        self.ui.pushButton_11.clicked.connect(self.checkObjectId)
-        self.ui.pushButton_5.clicked.connect(self.backup)
-        self.ui.pushButton_6.clicked.connect(self.restore)
-        self.ui.pushButton_10.clicked.connect(self.changeObjectId)
-        self.ui.pushButton_9.clicked.connect(self.changeCategory)
-        self.ui.pushButton.clicked.connect(self.changeDimension)
-        self.ui.pushButton_7.clicked.connect(self.changeAngle)
-        self.ui.pushButton_8.clicked.connect(self.copyObject)
-        self.ui.pushButton_3.clicked.connect(self.refreshFileName) # 폴더명 최신화
-        self.ui.pushButton_2.clicked.connect(self.autoMakeFiles)
-        self.ui.pushButton_13.clicked.connect(self.checkIfFileRefreshedOld)
+        self.ui.pushButton_4.clicked.connect(self.openFolder)       # 클립 폴더 열기
+        self.ui.pushButton_11.clicked.connect(self.checkObjectId)   # 객체 아이디 체크
+        self.ui.pushButton_5.clicked.connect(self.backup)           # result 백업
+        self.ui.pushButton_6.clicked.connect(self.restore)          # result 복원
+        self.ui.pushButton_10.clicked.connect(self.changeObjectId)  # 객체 아이디 변경
+        self.ui.pushButton_9.clicked.connect(self.changeCategory)   # 카테고리 변경
+        self.ui.pushButton.clicked.connect(self.changeDimension)    # 크기 변경
+        self.ui.pushButton_7.clicked.connect(self.changeAngle)      # 각도 변경
+        self.ui.pushButton_8.clicked.connect(self.copyObject)       # 객체 복사
+        self.ui.pushButton_3.clicked.connect(self.refreshFileName)  # 폴더명 최신화
+        self.ui.pushButton_2.clicked.connect(self.autoMakeFiles)    # result 빈 파일 자동 생성
+        self.ui.pushButton_13.clicked.connect(self.checkIfFileRefreshedOld) # 파일 새로고침 체크
         # self.ui.pushButton_12.clicked.connect(self.autoMakeFilesOld)
         self.ui.pushButton_14.clicked.connect(self.extractZip) # 압축 풀기
 
