@@ -3,7 +3,7 @@ import glob
 import time
 
 # 클립상위폴더 경로
-# root_path = r'D:\data_48\20220818_02_track\extract_2022-08-03-15-44-05'
+root_path = r'D:\Documents\GitHub\LabelingHelper\data\extract_2022-08-02-18-18-53_old_file_names'
 clips_path = glob.glob(os.path.join(root_path, '*'))
 
 for clip in clips_path:
@@ -18,15 +18,23 @@ for clip in clips_path:
     lc_cal_dist = os.path.join(clip, 'Calib', 'Lidar_camera_calib', f'481_ND_{clip_num}_LCC_CF.txt')
     lr_cal_dist = os.path.join(clip, 'Calib', 'Lidar_radar_calib', f'481_ND_{clip_num}_LRC_RF.txt')
 
-    # calib 파일명 변경
-    os.rename(lc_cal, lc_cal_dist)
-    os.rename(lr_cal, lr_cal_dist)
+    try:
+        # calib 파일명 변경
+        os.rename(lc_cal, lc_cal_dist)
+        os.rename(lr_cal, lr_cal_dist)
+    except FileNotFoundError:
+        print(f'{lc_cal} or {lr_cal} not found')
 
-    # Calib 폴더명 calib으로 변경(소문자)
-    os.rename(
-        os.path.join(clip, 'Calib'),
-        os.path.join(clip, 'calib')
-    )
+    try:
+        # Calib 폴더명 calib으로 변경(소문자)
+        os.rename(
+            os.path.join(clip, 'Calib'),
+            os.path.join(clip, 'calib')
+        )
+    except FileNotFoundError:
+        print(f'{os.path.join(clip, "Calib")} not found')
+        
+
 
     # 기존 카메라, 라이다, 레이다 파일 리스트
     cameras = glob.glob(os.path.join(clip, 'Camera', 'FrontCenter', 'blur', '*.png'))
@@ -47,7 +55,7 @@ for clip in clips_path:
     
     for r, r_d in zip(radars, radars_dist):
         os.rename(r, r_d)
-    
+
     # 카메라, 레이다 폴더명 변경
     os.rename(
         os.path.join(clip, 'Camera', 'FrontCenter'),

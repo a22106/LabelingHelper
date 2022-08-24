@@ -6,3 +6,6 @@ dist/
 *.egg/
 ./test.ipynb
 *.spec
+*.pdf
+file_name_changer*
+*.zip
