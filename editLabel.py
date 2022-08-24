@@ -143,7 +143,6 @@ class EditLabel():
             with open(self.resultList[idx], 'r') as f:
                 json_data = json.load(f) # json 데이터 불러옴
                 
-                
             for annot in json_data['annotation']:
                 if int(annot['id']) == id and annot['category'] != category:
                     annot['obj_type'] = obj_type

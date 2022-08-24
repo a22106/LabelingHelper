@@ -8,3 +8,4 @@ dist/
 *.spec
 *.pdf
 file_name_changer*
+*.zip
