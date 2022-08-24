@@ -56,14 +56,17 @@ class MainWindow(QMainWindow):
         path = str(QFileDialog.getExistingDirectory(self, 'Open Folder', self.saveOpendFolder))
         self.saveOpendFolder = path
         try:
-            
             if(path == '' or path == None):
                 self.printText('잘못된 경로입니다. 경로를 다시 설정해주세요.')
                 self.statusBar().showMessage('잘못된 경로입니다. 경로를 다시 설정해주세요.')
             # elif not os.path.isfile(glob.glob(path + r'\*.json')[0]):
             #     self.printText("")    
+            elif 'result' not in os.listdir(path):
+                self.printText('result 폴더가 없습니다. result 폴더를 생성해주세요.')
+                
             else:
                 self.inputPath = path
+                self.resultPath = path + r'\result'
                 self.editLabel = EditLabel(self.inputPath)
                 self.analyzeLabel = AnalyzeLabel(self.inputPath)
                 self.printText(f'{self.inputPath}에서 시작합니다.')
@@ -116,7 +119,7 @@ class MainWindow(QMainWindow):
 
     # 0. 파일 백업
     def backup(self):
-        if self.inputPath is None:
+        if self.inputPath is None or os.path.isdir(self.resultPath) is False:
             self.statusBarMessage('클립 경로를 설정하세요.')
             self.printText('클립 경로를 설정하세요.')
             return
@@ -139,7 +142,7 @@ class MainWindow(QMainWindow):
 
     # 1. 객체 아이디 확인
     def checkObjectId(self):
-        if self.inputPath is None:
+        if self.inputPath is None or os.path.isdir(self.resultPath) is False:
             self.statusBarMessage('클립 경로를 설정하세요.')
             self.printText('클립 경로를 설정하세요.')
             return
@@ -166,7 +169,7 @@ class MainWindow(QMainWindow):
 
     # 2. 객체 아이디 변경 버튼
     def changeObjectId(self):
-        if self.inputPath is None:
+        if self.inputPath is None or os.path.isdir(self.resultPath) is False:
             self.statusBarMessage('클립 경로를 설정하세요.')
             return
         else:
@@ -180,7 +183,7 @@ class MainWindow(QMainWindow):
     
     # 3. 객체 박스 크기 변경 버튼
     def changeDimension(self):
-        if self.inputPath is None:
+        if self.inputPath is None or os.path.isdir(self.resultPath) is False:
             self.printText('클립 경로를 설정하세요.')
             return
         else:
@@ -195,7 +198,7 @@ class MainWindow(QMainWindow):
 
     # 4. 객체 박스 각도 변경 버튼
     def changeAngle(self):
-        if self.inputPath is None:
+        if self.inputPath is None or os.path.isdir(self.resultPath) is False:
             self.statusBarMessage('클립 경로를 설정하세요.')
             return
         else:
@@ -219,7 +222,7 @@ class MainWindow(QMainWindow):
 
     # 5. 버그 아이디 변경 버튼
     def changeBugId(self):
-        if self.inputPath is None:
+        if self.inputPath is None or os.path.isdir(self.resultPath) is False:
             self.statusBarMessage('클립 경로를 설정하세요.')
             return
         else:
@@ -242,7 +245,7 @@ class MainWindow(QMainWindow):
                       13:'STREET_TREES', 14:'TURNNEL'}
         _OBJTYPE = {0: "동적객체", 1: "주행환경 객체"}
         
-        if self.inputPath is None:
+        if self.inputPath is None or os.path.isdir(self.resultPath) is False:
             self.statusBarMessage('클립 경로를 설정하세요.')
             self.printText('클립 경로를 설정하세요.')
             return False
@@ -284,7 +287,7 @@ class MainWindow(QMainWindow):
 
     # 8. 파일 자동 생성 버튼 생성    
     def autoMakeFiles(self):
-        if self.inputPath is None:
+        if self.inputPath is None or os.path.isdir(self.resultPath) is False:
             self.statusBarMessage('클립 경로를 설정하세요.')
             return False
         else:
@@ -314,9 +317,9 @@ class MainWindow(QMainWindow):
         self.printText('----------------------------------------------------')
         return True
     
-    # 9. 객체 복사 버튼 생성
+    # 9. 객체 복사 기능
     def copyObject(self):
-        if self.inputPath is None:
+        if self.inputPath is None or os.path.isdir(self.resultPath) is False:
             self.statusBarMessage('클립 경로를 설정하세요.')
             return False
         else:
@@ -447,7 +450,7 @@ class MainWindow(QMainWindow):
         self.ui.pushButton_2.clicked.connect(self.autoMakeFiles)
         self.ui.pushButton_13.clicked.connect(self.checkIfFileRefreshedOld)
         # self.ui.pushButton_12.clicked.connect(self.autoMakeFilesOld)
-        self.ui.pushButton_14.clicked.connect(self.extractZip)
+        self.ui.pushButton_14.clicked.connect(self.extractZip) # 압축 풀기
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
