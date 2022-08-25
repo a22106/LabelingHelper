@@ -12,7 +12,13 @@ class EditLabel():
         return len(self.resultList)
 
     def __getitem__(self, index):
-        return self.resultList[index]
+        try:
+            with open(self.resultList[index], 'r') as f:
+                json_data = json.load(f)
+        except Exception as e:
+            print(e)
+            return None
+        return json_data
 
     def setPath(self, path):
         '''
@@ -40,7 +46,9 @@ class EditLabel():
             self.resultNum = len(self.resultList)
             
         self.backupfolder = path + '/result_backup'
-        
+    
+    def getResultList(self):
+        return self.resultList
 
     def showJson(self, frame):
         with open(self.resultList[frame], 'r') as f:
@@ -85,7 +93,7 @@ class EditLabel():
     # change dimension
     def changeDim(self, id, width, height, length, frame = None):
         dim = [width, height, length] # 변경할 크기
-        
+        frames = []
         for idx in range(self.resultNum):
             with open(self.resultList[idx], 'r') as f:
                 json_data = json.load(f) # json 데이터 불러옴
@@ -96,14 +104,15 @@ class EditLabel():
                         if dim_value:
                             annot['3d_box'][0]['dimension'][dim_idx] = dim_value
                     print(f"프레임 {json_data['frame_no']}: {id}의 박스 크기를 {annot['3d_box'][0]['dimension']}로 변경")
+                    frames.append(json_data['frame_no'])
                     with open(self.resultList[idx], 'w') as f:
                         json.dump(json_data, f, indent=4)
                     continue
-        print("----------------------------------------------------")
-        return dim
+        return annot['3d_box'][0]['dimension'], frames
 
     # change id
     def changeId(self, id, newId):
+        frames = []
         for idx in range(self.resultNum):
             with open(self.resultList[idx], 'r') as f:
                 json_data = json.load(f) # json 데이터 불러옴
@@ -112,13 +121,21 @@ class EditLabel():
                 if annot['id'] == f'{id}' or annot['id'] == id:
                     annot['id'] = newId
                     print(f'프레임 {json_data["frame_no"]}: {id}의 id를 {newId}로 변경')
+                    frames.append(json_data['frame_no'])
                     with open(self.resultList[idx], 'w') as f:
                         json.dump(json_data, f, indent=4)
                         #print(f'{self.json_list[idx]}에 변경 완료')
         print("----------------------------------------------------")    
+        return frames
 
     # change Angle
     def changeAngle(self, id, angle):
+        r'''
+        id: int - 객체 번호
+        angle: float 객체 회전 각도 (degree, 12시 방향 0도)
+        return: list - 회전 각도가 변경된 프레임 번호
+        '''
+        frames = []
         for idx in range(self.resultNum):
             with open(self.resultList[idx], 'r') as f:
                 json_data = json.load(f) # json 데이터 불러옴
@@ -130,13 +147,22 @@ class EditLabel():
                 if int(annot['id']) == id:
                     annot['3d_box'][0]['rotation_y'] = angle_rad
                     print(f'프레임 {json_data["frame_no"]}: {id}의 각도를 {angle}로 변경')
+                    frames.append(json_data['frame_no'])
                     with open(self.resultList[idx], 'w') as f:
                         json.dump(json_data, f, indent=4)
                         #print(f'{self.json_list[idx]}에 변경 완료')
         print("----------------------------------------------------")
+        return frames
                             
     # change category
     def changeCategory(self, id, obj_type, category: str):
+        r'''
+        id: int - 객체 번호
+        obj_type: object type
+        category: object category
+        return: frames
+        '''
+        frames = []
         atypical_cat = ['MEDIAN_STRIP', 'SOUND_BARRIER', 'OVERPASS', 'RAMP_SECT', 'TUNNEL']
     
         for idx in range(self.resultNum):
@@ -153,10 +179,12 @@ class EditLabel():
                         annot['atypical_yn'] = "n"
                     
                     print(f'프레임 {json_data["frame_no"]}: {id}의 카테고리를 {category}로 변경')
+                    frames.append(json_data['frame_no'])
                     with open(self.resultList[idx], 'w') as f:
                         json.dump(json_data, f, indent=4)
                         #print(f'{self.json_list[idx]}에 변경 완료')    
         print("----------------------------------------------------")
+        return frames
 
     # change bugged object id
     def changeBuggedId(self, max_id):
@@ -185,21 +213,20 @@ class EditLabel():
                         elif annot['id'][i] == '1' and len(annot['id'][:i]) >= len(max_id):
                             annot['id'] = annot['id'][:i]
                             print(f'프레임 {json_data["frame_no"]}: {annot["id"]}의 id를 {annot["id"][:i]}로 변경')
-                            
                             with open(self.resultList[idx], 'w') as f:
                                 json.dump(json_data, f, indent=4)
                                 changed_num_count += 1
                             break
-                        
                 else:
                     continue
-
         print(f'{changed_num_count}개의 id를 변경했습니다.')
         return changed_num_count
     
     # copy objects
     def copyObject(self, id, frame, start=1, end=100, CHANGE=False):
         id, start, end = int(id), int(start), int(end) # 변경할 크기
+        frames_copy = []
+        frames_paste = []
         
         with open(self.resultList[frame-1], 'r') as f:
             json_data = json.load(f) # 목표 프레임의 json 데이터 불러옴
@@ -222,6 +249,7 @@ class EditLabel():
                 with open(self.resultList[idx], 'w') as f:
                     json.dump(json_data, f, indent=4)
                 print(f'프레임 {json_data["frame_no"]}: 객체 {id}의 오브젝트를 복사.')
+                frames_copy.append(json_data['frame_no'])
                 continue
             
             obj_num = len(json_data['annotation']) # 해당 프레임에 있는 객체 수
@@ -232,6 +260,7 @@ class EditLabel():
                     if CHANGE: # 붙여넣기 옵션이 켜져있다면 기존 객체의 값을 덮어쓰기
                         annot2 = self.copy_annotation(annot2, copy_annot)
                         print(f'프레임 {json_data["frame_no"]}: 객체 {id}의 오브젝트를 붙여넣기')
+                        frames_paste.append(json_data['frame_no'])
                         break
 
                     else: # 붙여넣기 옵션이 꺼져있다면 지나가기
@@ -249,6 +278,7 @@ class EditLabel():
             with open(self.resultList[idx], 'w') as f:
                 json.dump(json_data, f, indent=4)
         print("----------------------------------------------------")
+        return frames_copy, frames_paste
 
     def copy_annotation(self, annot, copy_annot):
         for key in copy_annot.keys():
