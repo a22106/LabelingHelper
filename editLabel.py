@@ -1,5 +1,4 @@
 import glob, json, os, copy, shutil, math
-from pyqtDesign.pyqtDesigner import Ui_MainWindow
 
 
 class EditLabel():
@@ -17,7 +16,9 @@ class EditLabel():
                 json_data = json.load(f)
         except Exception as e:
             print(e)
-            return None
+            exceptmessage = f'{self.resultList[index]}의 json 파일을 읽을 수 없습니다.'
+            print(exceptmessage)
+            return exceptmessage
         return json_data
 
     def setPath(self, path):
@@ -145,14 +146,33 @@ class EditLabel():
 
             for annot in json_data['annotation']:
                 if int(annot['id']) == id:
+                    formerAngle = math.degrees(annot['3d_box'][0]['rotation_y'])
                     annot['3d_box'][0]['rotation_y'] = angle_rad
-                    print(f'프레임 {json_data["frame_no"]}: {id}의 각도를 {angle}로 변경')
+                    print(f'프레임 {json_data["frame_no"]}: {id}의 각도 변경 {formerAngle} -> {angle}')
                     frames.append(json_data['frame_no'])
                     with open(self.resultList[idx], 'w') as f:
                         json.dump(json_data, f, indent=4)
                         #print(f'{self.json_list[idx]}에 변경 완료')
         print("----------------------------------------------------")
-        return frames
+        return frames, formerAngle
+    
+    # chnage angle 180
+    def changeAngle180(self, id):
+        frames = []
+        for idx in range(self.resultNum):
+            with open(self.resultList[idx], 'r') as f:
+                json_data = json.load(f) # json 데이터 불러옴
+            
+            for annot in json_data['annotation']:
+                if int(annot['id']) == id:
+                    curAngle = annot['3d_box'][0]['rotation_y']
+                    changedAngle = (curAngle + math.pi) % (2 * math.pi)
+                    annot['3d_box'][0]['rotation_y'] = changedAngle
+                    print(f'프레임 {json_data["frame_no"]}: {id}의 각도를 180˚ 회전 {math.degrees(curAngle)}-> {math.degrees(changedAngle)}')
+                    frames.append(json_data['frame_no'])
+                    with open(self.resultList[idx], 'w') as f:
+                        json.dump(json_data, f, indent=4)
+        return frames, math.degrees(curAngle), math.degrees(changedAngle)
                             
     # change category
     def changeCategory(self, id, obj_type, category: str):
@@ -273,6 +293,7 @@ class EditLabel():
                     if obj_num == obj_count:
                         json_data['annotation'].append(copy_annot)
                         print(f'프레임 {json_data["frame_no"]}: 객체 {id}의 오브젝트를 복사..')
+                        frames_copy.append(json_data['frame_no'])
                         break
             
             with open(self.resultList[idx], 'w') as f:
@@ -290,6 +311,7 @@ class EditLabel():
     # make backup file
     def makeBackup(self):
         copied_file_count = 0
+        backupFileList = []
         try:
             if not os.path.exists(self.backupfolder):
                 os.mkdir(self.backupfolder)
@@ -300,6 +322,7 @@ class EditLabel():
         for idx in range(self.resultNum):
             shutil.copy(self.resultList[idx], self.backupfolder)
             print(f'{self.resultList[idx]}을 백업파일로 만들었습니다.')
+            backupFileList.append(self.backupfolder+self.resultList[idx].split('/')[-1])
             copied_file_count += 1
 
         if copied_file_count == 0:
@@ -308,12 +331,13 @@ class EditLabel():
         else:
             print('{}개 파일 백업 완료'.format(copied_file_count))
             print("----------------------------------------------------")    
-            return copied_file_count
+            return copied_file_count, backupFileList
 
     # restore backup file
     def restoreBackup(self) -> int:
         backupFiles = glob.glob(self.backupfolder + '/*.json')
         copied_file_count = 0
+        curFilesList = []
         try:
             if not os.path.exists(self.backupfolder):
                 print('백업파일이 없습니다.')
@@ -332,8 +356,10 @@ class EditLabel():
         for file in backupFiles:
             #shutil.copy(self.backupfolder + '/' + self.json_list[idx].split('\\')[-1], self.json_list[idx])
             shutil.copy(file, self.resultPath)
+            curFilesList.append(self.resultPath + '/' + file.split('\\')[-1])
             print(f'{file}을 백업파일로 복원했습니다.')
             copied_file_count += 1
+        self.setPath(self.clipPath)
         
         if copied_file_count == 0:
             print('백업파일이 없습니다.')
@@ -341,4 +367,4 @@ class EditLabel():
         else:
             print('{}개 파일 복원 완료'.format(copied_file_count))
             print("----------------------------------------------------")    
-            return copied_file_count
+            return copied_file_count, curFilesList

@@ -4,9 +4,12 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, \
 from editLabel import EditLabel
 from analyzeLabel import AnalyzeLabel
 from pyqtDesign.pyqtDesigner import Ui_MainWindow
+from datetime import datetime
 
 import glob, json, os, time
 import numpy as np
+
+now = datetime.now()
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -120,29 +123,43 @@ class MainWindow(QMainWindow):
 
     # 0. 파일 백업
     def backup(self):
-        if self.inputPath is None or os.path.isdir(self.resultPath) is False:
+        if self.inputPath is None:
             self.printText('클립 경로를 설정하세요.')
-            return
+            return False
+        elif os.path.isdir(self.resultPath) is False:
+            self.printText('result 폴더가 없습니다. 라벨링 파일을 담은 정상적인 result 폴더를 생성해주세요.')
+            return False
         else:
-            self.editLabel.makeBackup()
-            self.printText('파일 백업 완료')
+            self.printText('백업 시작')
+            backupFileNum, backupFileList = self.editLabel.makeBackup()
+            for idx, backupFile in enumerate(backupFileList):
+                self.printText(f'{idx+1}/{backupFileNum} {backupFile} 백업 완료')
+            self.printText(f'{backupFileNum}개 파일 백업 완료')
+            return True
 
     def restore(self):
         if self.inputPath is None:
             self.printText('클립 경로를 설정하세요.')
             return
+        elif os.path.isdir(self.editLabel.backupfolder) is False:
+            self.printText('백업 폴더가 없습니다. 백업 폴더를 확인해주세요.')
         else:
-            count = self.editLabel.restoreBackup()
+            self.printText('파일 복원 시작')
+            count, curFileList = self.editLabel.restoreBackup()
             if count == 0:
-                self.printText('백업 파일이 없습니다.')
+                self.printText('백업할 파일이 없습니다.')
             else:
+                for idx, curFile in enumerate(curFileList):
+                    self.printText(f'{idx+1}/{count} {curFile} 복원 완료')
                 self.printText('{}개 파일 복원 완료'.format(count))
 
     # 1. 객체 아이디 확인
     def checkObjectId(self):
-        if self.inputPath is None or os.path.isdir(self.resultPath) is False:
+        if self.inputPath is None :
             self.printText('클립 경로를 설정하세요.')
             return
+        elif os.path.isdir(self.resultPath) is False:
+            self.printText('result 폴더가 없습니다. 라벨링 파일을 담은 정상적인 result 폴더를 생성해주세요.')
         else:
             #objId, ok = QInputDialog.getText(self, '객체 아이디 확인', '확인하려는 객체 아이디를 입력하세요:')
             # get QSpinBox number
@@ -158,18 +175,26 @@ class MainWindow(QMainWindow):
                         self.printText(f'객체 id {objId}가 프레임 {frame_idExist[0]} ~ {frame_idExist[-1]} 사이 {unique_frame_num}개의 프레임에 {len(frame_idExist)}개 있습니다.')
                     else:
                         self.printText(f'객체 id {objId}가 프레임 {frame_idExist}에 {len(frame_idExist)}개 있습니다.')
+                        
+                    self.printText(f'프레임 {frame_idExist[0]} 내 객체 id {objId}의 정보:')
+                    firstframe = frame_idExist[0]
+                    for obj in self.editLabel[firstframe]['annotation']:
+                        if int(obj['id']) == objId:
+                            self.printText(f'{obj}')
+                            continue
                 else:
                     self.printText(f'객체 id {objId}가 존재하지 않습니다.')
             else:
-                self.printText('취소됨')
+                self.printText('잘못된 객체 아이디입니다.')
 
 
     # 2. 객체 아이디 변경 버튼
     def changeObjectId(self):
-        if self.inputPath is None or os.path.isdir(self.resultPath) is False:
+        if self.inputPath is None:
             self.printText('클립 경로를 설정하세요.')
-            self.statusBarMessage('클립 경로를 설정하세요.')
             return
+        elif os.path.isdir(self.resultPath) is False:
+            self.printText('result 폴더가 없습니다. 라벨링 파일을 담은 정상적인 result 폴더를 생성해주세요.')
         else:
             objId = self.ui.spinBoxfromIdchange.value()
             changedId = self.ui.spinBoxToIdchange.value()
@@ -177,13 +202,17 @@ class MainWindow(QMainWindow):
                 frames = self.editLabel.changeId(objId, changedId)
                 self.printText('객체 아이디 변경. {} -> {}'.format(objId, changedId))
                 self.printText('객체 변경 프레임: \n{}'.format(frames))
+            else:
+                self.printText('수정할 ID나 변경될 ID를 확인해주세요. 0은 입력할 수 없습니다.')
     
     # 3. 객체 박스 크기 변경 버튼
     def changeDimension(self):
         if self.inputPath is None or os.path.isdir(self.resultPath) is False:
             self.printText('클립 경로를 설정하세요.')
-            self.statusBarMessage('클립 경로를 설정하세요.')
-            return
+            return False
+        elif os.path.isdir(self.resultPath) is False:
+            self.printText('result 폴더가 없습니다. 라벨링 파일을 담은 정상적인 result 폴더를 생성해주세요.')
+            return False
         else:
             objId = self.ui.spinBoxfromIdchange_3.value()
             width = self.ui.doubleSpinBox.value()
@@ -191,16 +220,22 @@ class MainWindow(QMainWindow):
             length = self.ui.doubleSpinBox_3.value()
             if objId:
                 box, frames = self.editLabel.changeDim(objId, width, height, length)
-                self.printText(f'ID: {objId}의 크기를 (width:{box[0]:03d}, height:{box[1]:03d}, length:{box[2]:03d})로 변경 완료')
+                self.printText(f'ID: {objId}의 크기를 (width:{box[0]:.03f}, height:{box[1]:.03f}, length:{box[2]:.03f})로 변경 완료')
                 self.printText(f'객체 변경 프레임: \n{frames}')
                 print("----------------------------------------------------")
+                return True
+            else:
+                self.printText('수정할 ID를 확인해주세요. 0은 입력할 수 없습니다.')
+                return False
 
     # 4. 객체 박스 각도 변경 버튼
     def changeAngle(self):
         if self.inputPath is None or os.path.isdir(self.resultPath) is False:
-            self.statusBarMessage('클립 경로를 설정하세요.')
             self.printText('클립 경로를 설정하세요.')
-            return
+            return False
+        elif os.path.isdir(self.resultPath) is False:
+            self.printText('result 폴더가 없습니다. 라벨링 파일을 담은 정상적인 result 폴더를 생성해주세요.')
+            return False
         else:
             objId = self.ui.spinBoxfromIdchange_3.value()
             angle = self.ui.doubleSpinBox_4.value()
@@ -208,14 +243,34 @@ class MainWindow(QMainWindow):
                 angle = float(angle)
             except:
                 self.printText('잘못된 각도입니다.')
-                return
+                return False
             if angle > 360 or angle < 0:
                 self.printText('잘못된 각도입니다.')
-                return
+                return False
             if objId and angle>=0:
-                frames = self.editLabel.changeAngle(objId, angle)
-                self.printText('객체 id({})의 각도를 {}˚로 변경 완료'.format(objId, angle))
+                frames, formerAngle = self.editLabel.changeAngle(objId, angle)
+                self.printText('객체 id({})의 각도 변경 완료. {}˚ -> {}˚'.format(objId, formerAngle, angle))
                 self.printText('객체 변경 프레임: \n{}'.format(frames))
+                return True
+            else:
+                self.printText('객체 아이디 혹은 각도를 다시 확인해주세요.')
+    
+    def changeAngle180(self):
+        if self.inputPath is None or os.path.isdir(self.resultPath) is False:
+            self.printText('클립 경로를 설정하세요.')
+            return False
+        elif os.path.isdir(self.resultPath) is False:
+            self.printText('result 폴더가 없습니다. 라벨링 파일을 담은 정상적인 result 폴더를 생성해주세요.')
+            return False
+        else:
+            objId = self.ui.spinBoxfromIdchange_3.value()
+            if objId:
+                frames, curAngleDeg, changedAngleDeg = self.editLabel.changeAngle180(objId)
+                self.printText('객체 id({})의 각도 변경 완료. {:.3f} -> {:.3f}'.format(objId, curAngleDeg, changedAngleDeg))
+                self.printText('객체 변경 프레임: \n{}'.format(frames))
+                return True
+            else:
+                self.printText('객체 아이디 혹은 각도를 다시 확인해주세요.')
 
     # # 5. 버그 아이디 변경 버튼
     # def changeBugId(self):
@@ -242,9 +297,11 @@ class MainWindow(QMainWindow):
                       13:'STREET_TREES', 14:'TURNNEL'}
         _OBJTYPE = {0: "동적객체", 1: "주행환경 객체"}
         
-        if self.inputPath is None or os.path.isdir(self.resultPath) is False:
-            self.statusBarMessage('클립 경로를 설정하세요.')
+        if self.inputPath is None:
             self.printText('클립 경로를 설정하세요.')
+            return False
+        elif os.path.isdir(self.resultPath) is False:
+            self.printText('result 폴더가 없습니다. 라벨링 파일을 담은 정상적인 result 폴더를 생성해주세요.')
             return False
         
         objId = self.ui.spinBoxfromIdCategory.value()
@@ -262,7 +319,7 @@ class MainWindow(QMainWindow):
             self.printText('카테고리 변경 프레임: {}'.format(frames))
             return True
         else:
-            self.statusBarMessage("객체 아이디 설정 및 카테고리 타입 설정을 다시 하세요.")
+            self.printText("객체 아이디 설정 및 카테고리 타입 설정을 다시 해주세요.")
         
 
     def wr_input(self):
@@ -280,8 +337,11 @@ class MainWindow(QMainWindow):
 
     # 8. 파일 자동 생성 버튼 생성    
     def autoMakeFiles(self):
-        if self.inputPath is None or os.path.isdir(self.resultPath) is False:
+        if self.inputPath is None:
             self.statusBarMessage('클립 경로를 설정하세요.')
+            return False
+        elif os.path.isdir(self.resultPath) is False:
+            self.printText('result 폴더가 없습니다. 라벨링 파일을 담은 정상적인 result 폴더를 생성해주세요.')
             return False
         else:
             file_list = self.editLabel.resultList
@@ -313,8 +373,10 @@ class MainWindow(QMainWindow):
     # 9. 객체 복사 기능
     def copyObject(self):
         if self.inputPath is None or os.path.isdir(self.resultPath) is False:
-            self.statusBarMessage('클립 경로를 설정하세요.')
             self.printText('클립 경로를 설정하세요.')
+            return False
+        elif os.path.isdir(self.resultPath) is False:
+            self.printText('result 폴더가 없습니다. 라벨링 파일을 담은 정상적인 result 폴더를 생성해주세요.')
             return False
         else:
             self.printText("복사 기능 사용 전에 백업을 권장합니다.")
@@ -340,7 +402,7 @@ class MainWindow(QMainWindow):
                 messagebox.setWindowTitle('객체 붙여넣기 확인')
                 messagebox.addButton(QPushButton('예'), QMessageBox.YesRole)
                 messagebox.addButton(QPushButton('아니오'), QMessageBox.NoRole)
-                messagebox.setText('프레임 범위 내에 같은 아이디의 객체 정보를 변경하시겠습니까?')
+                messagebox.setText('프레임 범위 내에 같은 아이디의 객체 정보를 변경(붙여넣기)하시겠습니까?')
                 button = messagebox.exec_()
                 
                 # button:0 예, 1 아니오
@@ -382,10 +444,11 @@ class MainWindow(QMainWindow):
     def statusBarMessage(self, *args):
         # change tuple to string
         message = ' '.join(args)
+        now = datetime.now()
         if message:
-            self.statusBar().showMessage(message)
+            self.statusBar().showMessage(f'[{now.time():%H:%M:%S}] ' + message)
         else:
-            self.statusBar().showMessage("경로를 설정해주세요")
+            self.statusBar().showMessage(f'[{now.time():%H:%M:%S}] ' + "경로를 설정해주세요")
     
     def printText(self, *args):
         r'''
@@ -400,9 +463,10 @@ class MainWindow(QMainWindow):
                 messageList.append(arg)
         
         message = ' '.join(messageList)
+        now = datetime.now()
         if message:
-            self.ui.textBrowser.append(message)
-        print(message)
+            self.ui.textBrowser.append(f'[{now.time():%H:%M:%S}] ' + message)
+        print(f'[{now.time():%H:%M:%S}] ' + message)
         
     
     def checkIfFileRefreshedOld(self):
@@ -491,29 +555,39 @@ class MainWindow(QMainWindow):
                 zip_ref.extractall(self.editLabel.clipPath + '/result')
             self.editLabel.setPath(self.editLabel.clipPath)
             self.printText('압축 풀기 완료')
-            self.statusBarMessage('압축 풀기 완료')
         except:
             self.printText('압축 풀기 실패')
             self.printText('해당 클립 폴더 내에 result.zip 파일이 없습니다.')
+    
+    def openCurrentFolder(self):
+        if self.inputPath is None:
+            self.statusBarMessage('클립 경로를 설정하세요.')
+            self.printText('클립 경로를 설정하세요.')
+            return False
+        else:
+            os.startfile(self.inputPath)
+            self.printText('현재 클립 경로로 이동')
 
     def mainWindow(self):
         self.center()
-        self.ui.pushButton_4.clicked.connect(self.openFolder)       # 클립 폴더 열기
-        self.ui.pushButton_15.clicked.connect(self.checkresult)     # result 폴더 확인
-        self.ui.pushButton_11.clicked.connect(self.checkObjectId)   # 객체 아이디 체크
-        self.ui.pushButton_5.clicked.connect(self.backup)           # result 백업
-        self.ui.pushButton_6.clicked.connect(self.restore)          # result 복원
-        self.ui.pushButton_10.clicked.connect(self.changeObjectId)  # 객체 아이디 변경
-        self.ui.pushButton_9.clicked.connect(self.changeCategory)   # 카테고리 변경
-        self.ui.pushButton.clicked.connect(self.changeDimension)    # 크기 변경
-        self.ui.pushButton_7.clicked.connect(self.changeAngle)      # 각도 변경
-        self.ui.pushButton_8.clicked.connect(self.copyObject)       # 객체 복사
-        self.ui.pushButton_3.clicked.connect(self.refreshFileName)  # 폴더명 최신화
-        self.ui.pushButton_2.clicked.connect(self.autoMakeFiles)    # result 빈 파일 자동 생성
+        self.ui.pushButton_4.clicked.connect(self.openFolder)               # 클립 폴더 열기
+        self.ui.pushButton_15.clicked.connect(self.checkresult)             # result 폴더 확인
+        self.ui.pushButton_11.clicked.connect(self.checkObjectId)           # 객체 아이디 체크
+        self.ui.pushButton_5.clicked.connect(self.backup)                   # result 백업
+        self.ui.pushButton_6.clicked.connect(self.restore)                  # result 복원
+        self.ui.pushButton_10.clicked.connect(self.changeObjectId)          # 객체 아이디 변경
+        self.ui.pushButton_9.clicked.connect(self.changeCategory)           # 카테고리 변경
+        self.ui.pushButton.clicked.connect(self.changeDimension)            # 크기 변경
+        self.ui.pushButton_7.clicked.connect(self.changeAngle)              # 각도 변경
+        self.ui.pushButton_16.clicked.connect(self.changeAngle180)              # 압축 풀기
+        self.ui.pushButton_8.clicked.connect(self.copyObject)               # 객체 복사
+        self.ui.pushButton_3.clicked.connect(self.refreshFileName)          # 폴더명 최신화
+        self.ui.pushButton_2.clicked.connect(self.autoMakeFiles)            # result 빈 파일 자동 생성
         self.ui.pushButton_13.clicked.connect(self.checkIfFileRefreshedOld) # 파일 새로고침 체크
         # self.ui.pushButton_12.clicked.connect(self.autoMakeFilesOld)
-        self.ui.pushButton_14.clicked.connect(self.extractZip) # 압축 풀기
-
+        self.ui.pushButton_14.clicked.connect(self.extractZip)              # 압축 풀기
+        self.ui.pushButton_17.clicked.connect(self.openCurrentFolder)       # 현재 클립 경로 열기
+        
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     mw = MainWindow()
