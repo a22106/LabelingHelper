@@ -106,7 +106,7 @@ class RejectModule:
     def set_curr_clip(self, clip):
         self.curr_clip = clip
     def set_rejecter_name(self, name):
-        self.rejecter_name
+        self.rejecter_name = name
     
     def get_base_path(self):
         return self.base_path

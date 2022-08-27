@@ -1,4 +1,4 @@
-pyinstaller --clean -F main.py
+pyinstaller --clean -F main_newUI.py
 
 # pyinstaller <-configs> main.py
 # -F : 실행파일 하나만 생성
