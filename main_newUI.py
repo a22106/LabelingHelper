@@ -292,7 +292,7 @@ class MainWindow(QMainWindow):
 
     #6. 카테고리 수정
     def changeCategory(self)->bool:
-        _CATEGORY = {1: 'CAR', 2: 'TRUCK', 3: 'PEDESTRIAN', 4: 'MOTOCYCLE', 
+        _CATEGORY = {1: 'CAR', 2: 'TRUCK', 3: 'PEDESTRIAN', 4: 'MOTORCYCLE', 
                       5: 'BUS', 6: 'BICYCLE', 7: 'ETC', 8:'MEDIAN_STRIP', 9:'SOUND_BARRIER', 10:'OVERPASS', 11:'RAMP_SECT', 12: 'ROAD_SIGN', 
                       13:'STREET_TREES', 14:'TURNNEL'}
         _OBJTYPE = {0: "동적객체", 1: "주행환경 객체"}
