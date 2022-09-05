@@ -56,8 +56,6 @@ class MainWindow(QMainWindow):
     # result 폴더 경로 설정
     def openFolder(self):
         path = str(QFileDialog.getExistingDirectory(self, 'Open Folder', self.saveOpendFolder))
-        if not path:
-            self.saveOpendFolder = path
         
         try:
             if(path == '' or path == None):
@@ -65,6 +63,7 @@ class MainWindow(QMainWindow):
                 if not self.inputPath:
                     self.statusBar().showMessage('잘못된 경로입니다. 경로를 다시 설정해주세요.')
             else:
+                self.saveOpendFolder = path # 다음 폴더 열기 경로 저장
                 self.inputPath = path
                 self.resultPath = path + r'\result'
                 self.editLabel = EditLabel(self.inputPath)
@@ -427,6 +426,20 @@ class MainWindow(QMainWindow):
                     self.printText('객체 붙여넣기된 프레임: {}'.format(frame_paste))
                     self.printText('객체 복사 완료')
                     return True
+
+    # 10. 객체 삭제 기능
+    def removeObj(self):
+        if self.inputPath is None:
+            self.statusBarMessage('클립 경로를 설정하세요.')
+            self.printText('클립 경로를 설정하세요.')
+            return False
+        obj = {'id': self.ui.spinBoxfromIdchange_9.value(),
+               'startFrame': self.ui.spinBoxfromIdchange_10.value(),
+               'endFrame': self.ui.spinBoxfromIdchange_11.value(),}
+        
+        removed_frames = self.editLabel.removeObj(obj)
+        self.printText(f'객체 삭제된 프레임 : {removed_frames}')
+        self.printText('선택한 객체 삭제 완료')
                         
     # 10. 파일명 통일 기능 버튼 생성
     def renameFileName(self):
@@ -549,6 +562,7 @@ class MainWindow(QMainWindow):
         
         self.printText('확인 완료')
         
+        
     def extractZip(self):
         try:
             with zipfile.ZipFile(self.editLabel.clipPath + '/result.zip', 'r') as zip_ref:
@@ -567,6 +581,7 @@ class MainWindow(QMainWindow):
         else:
             os.startfile(self.inputPath)
             self.printText('현재 클립 경로로 이동')
+    
 
     def mainWindow(self):
         self.center()
@@ -587,6 +602,7 @@ class MainWindow(QMainWindow):
         # self.ui.pushButton_12.clicked.connect(self.autoMakeFilesOld)
         self.ui.pushButton_14.clicked.connect(self.extractZip)              # 압축 풀기
         self.ui.pushButton_17.clicked.connect(self.openCurrentFolder)       # 현재 클립 경로 열기
+        self.ui.pushButton_18.clicked.connect(self.removeObj)               # 객체 제거
         
 if __name__ == '__main__':
     app = QApplication(sys.argv)

@@ -1,5 +1,4 @@
 import glob, json, os, copy, shutil
-from tqdm import tqdm
 
 class AnalyzeLabel():
     
@@ -38,7 +37,7 @@ class AnalyzeLabel():
         
         # depth2, depth3, depth4, depth5 폴더 이름
         
-        for d2_folder in tqdm(clip_listdir):
+        for d2_folder in clip_listdir:
             # pass calibration folder
             # if d2_folder.lower() == 'calib':
             #     continue

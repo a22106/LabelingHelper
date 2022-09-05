@@ -244,7 +244,7 @@ class EditLabel():
     
     # copy objects
     def copyObject(self, id, frame, start=1, end=100, CHANGE=False):
-        id, start, end = int(id), int(start), int(end) # 변경할 크기
+        id, start, end = int(id), int(start), int(end)
         frames_copy = []
         frames_paste = []
         
@@ -306,6 +306,30 @@ class EditLabel():
             annot[key] = copy_annot[key]
         return annot
 
+    def removeObj(self, obj: dict):
+        frames_delete = []
+        id, start, end = obj['id'], obj['startFrame'], obj['endFrame']
+        
+        for idx in range(start-1, end):
+            with open(self.resultList[idx], 'r') as f:
+                json_data = json.load(f) # json 데이터 불러옴
+            
+            if not json_data['annotation']:
+                continue
+            
+            for annot2 in json_data['annotation']:
+                if int(annot2['id']) == id:
+                    json_data['annotation'].remove(annot2)
+                    print(f'프레임 {json_data["frame_no"]}: 객체 {id}의 오브젝트를 삭제.')
+                    frames_delete.append(json_data['frame_no'])
+                    break
+                
+            with open(self.resultList[idx], 'w') as f:
+                json.dump(json_data, f, indent=4)
+        print("----------------------------------------------------")
+        return frames_delete
+        
+        
 
 
     # make backup file
