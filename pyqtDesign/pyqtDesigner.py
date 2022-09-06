@@ -42,7 +42,7 @@ class Ui_MainWindow(object):
         self.tab_6 = QtWidgets.QWidget()
         self.tab_6.setObjectName("tab_6")
         self.tabWidget_3 = QtWidgets.QTabWidget(self.tab_6)
-        self.tabWidget_3.setGeometry(QtCore.QRect(0, 10, 761, 241))
+        self.tabWidget_3.setGeometry(QtCore.QRect(0, 0, 761, 241))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -245,12 +245,12 @@ class Ui_MainWindow(object):
         self.doubleSpinBox_4.setMaximum(360.0)
         self.doubleSpinBox_4.setObjectName("doubleSpinBox_4")
         self.gridLayout_3.addWidget(self.doubleSpinBox_4, 4, 2, 1, 1)
-        self.pushButton_16 = QtWidgets.QPushButton(self.gridLayoutWidget_3)
-        self.pushButton_16.setObjectName("pushButton_16")
-        self.gridLayout_3.addWidget(self.pushButton_16, 4, 1, 1, 1)
         self.textBrowser_4 = QtWidgets.QTextBrowser(self.tab_11)
         self.textBrowser_4.setGeometry(QtCore.QRect(0, 0, 311, 211))
         self.textBrowser_4.setObjectName("textBrowser_4")
+        self.pushButton_16 = QtWidgets.QPushButton(self.tab_11)
+        self.pushButton_16.setGeometry(QtCore.QRect(540, 180, 78, 23))
+        self.pushButton_16.setObjectName("pushButton_16")
         self.tabWidget_3.addTab(self.tab_11, "")
         self.tab_12 = QtWidgets.QWidget()
         self.tab_12.setObjectName("tab_12")
@@ -302,6 +302,48 @@ class Ui_MainWindow(object):
         self.textBrowser_5.setGeometry(QtCore.QRect(0, 0, 311, 211))
         self.textBrowser_5.setObjectName("textBrowser_5")
         self.tabWidget_3.addTab(self.tab_12, "")
+        self.tab_4 = QtWidgets.QWidget()
+        self.tab_4.setObjectName("tab_4")
+        self.textBrowser_7 = QtWidgets.QTextBrowser(self.tab_4)
+        self.textBrowser_7.setGeometry(QtCore.QRect(0, 0, 311, 211))
+        self.textBrowser_7.setObjectName("textBrowser_7")
+        self.gridLayoutWidget_5 = QtWidgets.QWidget(self.tab_4)
+        self.gridLayoutWidget_5.setGeometry(QtCore.QRect(360, 10, 321, 151))
+        self.gridLayoutWidget_5.setObjectName("gridLayoutWidget_5")
+        self.gridLayout_5 = QtWidgets.QGridLayout(self.gridLayoutWidget_5)
+        self.gridLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout_5.setObjectName("gridLayout_5")
+        self.label_24 = QtWidgets.QLabel(self.gridLayoutWidget_5)
+        self.label_24.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_24.setObjectName("label_24")
+        self.gridLayout_5.addWidget(self.label_24, 3, 0, 1, 1)
+        self.label_25 = QtWidgets.QLabel(self.gridLayoutWidget_5)
+        self.label_25.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_25.setObjectName("label_25")
+        self.gridLayout_5.addWidget(self.label_25, 1, 0, 1, 1)
+        self.spinBoxfromIdchange_9 = QtWidgets.QSpinBox(self.gridLayoutWidget_5)
+        self.spinBoxfromIdchange_9.setMaximum(1000)
+        self.spinBoxfromIdchange_9.setObjectName("spinBoxfromIdchange_9")
+        self.gridLayout_5.addWidget(self.spinBoxfromIdchange_9, 2, 0, 1, 1)
+        self.spinBoxfromIdchange_10 = QtWidgets.QSpinBox(self.gridLayoutWidget_5)
+        self.spinBoxfromIdchange_10.setMinimum(1)
+        self.spinBoxfromIdchange_10.setMaximum(100)
+        self.spinBoxfromIdchange_10.setObjectName("spinBoxfromIdchange_10")
+        self.gridLayout_5.addWidget(self.spinBoxfromIdchange_10, 4, 0, 1, 1)
+        self.label_27 = QtWidgets.QLabel(self.gridLayoutWidget_5)
+        self.label_27.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_27.setObjectName("label_27")
+        self.gridLayout_5.addWidget(self.label_27, 3, 1, 1, 1)
+        self.spinBoxfromIdchange_11 = QtWidgets.QSpinBox(self.gridLayoutWidget_5)
+        self.spinBoxfromIdchange_11.setMinimum(1)
+        self.spinBoxfromIdchange_11.setMaximum(100)
+        self.spinBoxfromIdchange_11.setProperty("value", 100)
+        self.spinBoxfromIdchange_11.setObjectName("spinBoxfromIdchange_11")
+        self.gridLayout_5.addWidget(self.spinBoxfromIdchange_11, 4, 1, 1, 1)
+        self.pushButton_18 = QtWidgets.QPushButton(self.tab_4)
+        self.pushButton_18.setGeometry(QtCore.QRect(470, 180, 101, 23))
+        self.pushButton_18.setObjectName("pushButton_18")
+        self.tabWidget_3.addTab(self.tab_4, "")
         self.tabWidget_2.addTab(self.tab_6, "")
         self.tab_3 = QtWidgets.QWidget()
         self.tab_3.setObjectName("tab_3")
@@ -475,7 +517,6 @@ class Ui_MainWindow(object):
         self.pushButton.setText(_translate("MainWindow", "수정"))
         self.label_18.setText(_translate("MainWindow", "수정할 각도˚"))
         self.label_14.setText(_translate("MainWindow", "Width"))
-        self.pushButton_16.setText(_translate("MainWindow", "180˚ 회전"))
         self.textBrowser_4.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -490,9 +531,11 @@ class Ui_MainWindow(object):
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\"><br /></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">2. 객체 박스의 각도를 수정합니다.</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">전방 12시 방향이 0˚이며, 반시계방향으로 각도가 커집니다.</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">현재 각도에서 180˚ 변경도 가능합니다.</span></p></body></html>"))
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">180˚ 수정 버튼은 현재 각도에서 바로 변경 및 적용합니다.</span></p></body></html>"))
+        self.pushButton_16.setText(_translate("MainWindow", "180˚ 회전"))
         self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_11), _translate("MainWindow", "박스 크기·각도 수정"))
-        self.pushButton_8.setText(_translate("MainWindow", "수정"))
+        self.pushButton_8.setText(_translate("MainWindow", "복사"))
         self.label_21.setText(_translate("MainWindow", "붙여넣기 시작 프레임"))
         self.label_19.setText(_translate("MainWindow", "ID"))
         self.label_20.setText(_translate("MainWindow", "복사 객체 프레임"))
@@ -512,6 +555,19 @@ class Ui_MainWindow(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">붙여넣기 여부를 입력합니다.</span></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\"><br /></p></body></html>"))
         self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_12), _translate("MainWindow", "복사 붙여넣기"))
+        self.textBrowser_7.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'Gulim\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">선택한 객체를 범위 내 프레임에서 삭제하는 기능입니다.</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">삭제할 객체의 아이디, 범위 프레임을 설정하면</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">해당 객체가 프레임 범위 내에서 모두 삭제됩니다.</span></p></body></html>"))
+        self.label_24.setText(_translate("MainWindow", "삭제 시작 프레임"))
+        self.label_25.setText(_translate("MainWindow", "ID"))
+        self.label_27.setText(_translate("MainWindow", "삭제 끝 프레임"))
+        self.pushButton_18.setText(_translate("MainWindow", "삭제"))
+        self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_4), _translate("MainWindow", "객체 삭제"))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_6), _translate("MainWindow", "객체 수정"))
         self.textBrowser_6.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
