@@ -440,7 +440,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.tabWidget_2.setCurrentIndex(0)
-        self.tabWidget_3.setCurrentIndex(5)
+        self.tabWidget_3.setCurrentIndex(0)
         self.tabWidget_4.setCurrentIndex(0)
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -566,7 +566,7 @@ class Ui_MainWindow(object):
         self.label_24.setText(_translate("MainWindow", "삭제 시작 프레임"))
         self.label_25.setText(_translate("MainWindow", "ID"))
         self.label_27.setText(_translate("MainWindow", "삭제 끝 프레임"))
-        self.pushButton_18.setText(_translate("MainWindow", "복사"))
+        self.pushButton_18.setText(_translate("MainWindow", "삭제"))
         self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_4), _translate("MainWindow", "객체 삭제"))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_6), _translate("MainWindow", "객체 수정"))
         self.textBrowser_6.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"

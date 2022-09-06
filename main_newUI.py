@@ -429,17 +429,36 @@ class MainWindow(QMainWindow):
 
     # 10. 객체 삭제 기능
     def removeObj(self):
-        if self.inputPath is None:
+        if self.inputPath is None: # 클립 경로 미설정
             self.statusBarMessage('클립 경로를 설정하세요.')
             self.printText('클립 경로를 설정하세요.')
             return False
-        obj = {'id': self.ui.spinBoxfromIdchange_9.value(),
+        
+        obj = {'id': self.ui.spinBoxfromIdchange_9.value(), # obj 사전에 객체 수정 정보 저장
                'startFrame': self.ui.spinBoxfromIdchange_10.value(),
                'endFrame': self.ui.spinBoxfromIdchange_11.value(),}
         
-        removed_frames = self.editLabel.removeObj(obj)
+        messagebox = QMessageBox() # 삭제 진행 여부 확인 메시지 박스
+        messagebox.setWindowTitle(f'객체 {obj["id"]} 삭제 여부 확인')
+        messagebox.addButton(QPushButton('예'), QMessageBox.YesRole)
+        messagebox.addButton(QPushButton('아니오'), QMessageBox.NoRole)
+        messagebox.setText(f'{obj["startFrame"]} ~ {obj["endFrame"]} 프레임 범위 내 객체 ID({obj["id"]}) 삭제를 진행하시겠습니까?')
+        button = messagebox.exec_() # button:0 예, 1: 아니오
+            
+        if button == 0:
+            removed_frames = self.editLabel.removeObj(obj)
+        else:
+            self.printText("객체 삭제를 취소했습니다.")
+            return False
+        
+        if not removed_frames:
+            self.printText('객체 아이디가 0보다 커야합니다.')
+            return False
+        
         self.printText(f'객체 삭제된 프레임 : {removed_frames}')
         self.printText('선택한 객체 삭제 완료')
+        
+        
                         
     # 10. 파일명 통일 기능 버튼 생성
     def renameFileName(self):
