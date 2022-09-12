@@ -51,8 +51,8 @@ class MainWindow(QMainWindow):
             self.printText(WRONG_CLIP_MESSAGE)
             return False
         else:
-            self.editLabel.setPath(self.inputPath)
-            file_list = self.editLabel.getResultList()
+            self.editLabel.set_path(self.inputPath)
+            file_list = self.editLabel.get_result_list()
             self.printText("파일 개수 : {}".format(len(file_list)))
             with open(file_list[0], 'r') as f:
                 json_data = json.load(f)  # json 데이터 불러옴
@@ -92,13 +92,13 @@ class MainWindow(QMainWindow):
         extract_path = self.ui.lineEdit.text()
 
         if extract_path:
-            self.analyzeLabel = AnalyzeLabel(extractPath=extract_path)
-            clip_path_list = glob.glob(self.analyzeLabel.extractPath + r'\*')
+            self.analyzeLabel = AnalyzeLabel(extract_path=extract_path)
+            clip_path_list = glob.glob(self.analyzeLabel.extract_path + r'\*')
             clip_path_list.sort()
             # clipPathList에서 Clip 폴더만 추출
             clip_path_list = [
                 clipPath for clipPath in clip_path_list if 'Clip' in clipPath and os.path.isdir(clipPath)]
-            self.analyzeLabel.clipPathList = clip_path_list
+            self.analyzeLabel.clipPath_list = clip_path_list
 
             for clip in clip_path_list:
                 self.analyzeLabel.fix_filenames(clip)
@@ -139,7 +139,7 @@ class MainWindow(QMainWindow):
             return False
         else:
             self.printText('백업 시작')
-            backup_file_num, backup_file_list = self.editLabel.makeBackup()
+            backup_file_num, backup_file_list = self.editLabel.make_backup()
             for idx, backup_file in enumerate(backup_file_list):
                 self.printText(
                     f'{idx+1}/{backup_file_num} {backup_file} 백업 완료')
@@ -154,7 +154,7 @@ class MainWindow(QMainWindow):
             self.printText('백업 폴더가 없습니다. 백업 폴더를 확인해주세요.')
         else:
             self.printText('파일 복원 시작')
-            count, cur_file_list = self.editLabel.restoreBackup()
+            count, cur_file_list = self.editLabel.restore_backup()
             if count == 0:
                 self.printText('백업할 파일이 없습니다.')
             else:
@@ -173,7 +173,7 @@ class MainWindow(QMainWindow):
             obj_id = self.ui.spinBoxfromIdchange_2.value()
 
             if obj_id:
-                frame_id_exist = self.editLabel.checkObjectId(obj_id)
+                frame_id_exist = self.editLabel.check_object_id(obj_id)
                 unique_frame_num = len(np.unique(frame_id_exist))
                 if frame_id_exist:
                     if len(frame_id_exist) >= 100:
@@ -209,7 +209,7 @@ class MainWindow(QMainWindow):
             obj_id = self.ui.spinBoxfromIdchange.value()
             changed_id = self.ui.spinBoxToIdchange.value()
             if obj_id and changed_id:
-                frames = self.editLabel.changeId(obj_id, changed_id)
+                frames = self.editLabel.change_id(obj_id, changed_id)
                 self.printText(f'객체 아이디 변경. {obj_id} -> {changed_id}')
                 self.printText(f'객체 변경 프레임: \n{frames}')
             else:
@@ -229,7 +229,7 @@ class MainWindow(QMainWindow):
             height = self.ui.doubleSpinBox_2.value()
             length = self.ui.doubleSpinBox_3.value()
             if obj_id:
-                box, frames = self.editLabel.changeDim(
+                box, frames = self.editLabel.change_dim(
                     obj_id, width, height, length)
                 self.printText(
                     f'ID: {obj_id}의 크기를 (width:{box[0]:.03f}, height:{box[1]:.03f}, length:{box[2]:.03f})로 변경 완료')
@@ -260,7 +260,7 @@ class MainWindow(QMainWindow):
                 self.printText('잘못된 각도입니다.')
                 return False
             if obj_id and angle >= 0:
-                frames, former_angle = self.editLabel.changeAngle(
+                frames, former_angle = self.editLabel.change_angle(
                     obj_id, angle)
                 self.printText(
                     '객체 id({})의 각도 변경 완료. {}˚ -> {}˚'.format(obj_id, former_angle, angle))
@@ -279,7 +279,7 @@ class MainWindow(QMainWindow):
         else:
             obj_id = self.ui.spinBoxfromIdchange_3.value()
             if obj_id:
-                frames, cur_angle_degree, changed_angle_degree = self.editLabel.changeAngle180(
+                frames, cur_angle_degree, changed_angle_degree = self.editLabel.change_angle180(
                     obj_id)
                 self.printText('객체 id({})의 각도 변경 완료. {:.3f} -> {:.3f}'.format(
                     obj_id, cur_angle_degree, changed_angle_degree))
@@ -287,24 +287,6 @@ class MainWindow(QMainWindow):
                 return True
             else:
                 self.printText('객체 아이디 혹은 각도를 다시 확인해주세요.')
-
-    # # 5. 버그 아이디 변경 버튼
-    # def changeBugId(self):
-    #     if self.inputPath is None or os.path.isdir(self.resultPath) is False:
-    #         self.printText(WRONG_CLIP_MESSAGE)
-    #         return
-    #     else:
-    #         maxId, ok2 = QInputDialog.getText(self, '버그 아이디 변경', '변경하지 않을 가장 큰 아이디를 입력하세요:')
-    #         try:
-    #             maxId = int(maxId)
-    #         except:
-    #             self.statusBarMessage('잘못된 아이디입니다.')
-    #             return
-    #         if ok2:
-    #             self.printText('maxId: ', maxId)
-    #             count = self.editLabel.changeBuggedId(maxId)
-
-    #             self.statusBar().showMessage('크기 {} 이상의 버그 아이디 {}개를 변경 완료'.format(maxId, count))
 
     # 6. 카테고리 수정
     def changeCategory(self) -> bool:
@@ -321,7 +303,6 @@ class MainWindow(QMainWindow):
             return False
 
         obj_id = self.ui.spinBoxfromIdCategory.value()
-
         obj_category = self.ui.comboBox.currentIndex()
 
         if obj_id and obj_category:
@@ -330,7 +311,7 @@ class MainWindow(QMainWindow):
                 obj_type = 0
             else:
                 obj_type = 1
-            frames = self.editLabel.changeCategory(
+            frames = self.editLabel.change_category(
                 obj_id, obj_type, _CATEGORY[obj_category])
             self.printText('객체 {}의 카테고리를 {}({})로 변경 완료'.format(
                 obj_id, _OBJTYPE[obj_type], _CATEGORY[obj_category]))
@@ -361,7 +342,7 @@ class MainWindow(QMainWindow):
             self.printText(NO_RESULT_FOLDER_MESSAGE)
             return False
         else:
-            file_list = self.editLabel.resultList
+            file_list = self.editLabel.result_list
             try:
                 first_file = file_list[0]
             except IndexError:
@@ -384,7 +365,7 @@ class MainWindow(QMainWindow):
                     with open(cur_file, 'w') as f:
                         json.dump(json_data, f, indent=4)
                         self.printText('{} 파일 생성 완료'.format(cur_file))
-        self.editLabel.setPath(self.inputPath)
+        self.editLabel.set_path(self.inputPath)
         self.printText('----------------------------------------------------')
         return True
 
@@ -398,15 +379,14 @@ class MainWindow(QMainWindow):
             return False
         else:
             self.printText("복사 기능 사용 전에 백업을 권장합니다.")
-            self.editLabel.setPath(self.inputPath)
-            self.editLabel.resultNum
+            self.editLabel.set_path(self.inputPath)
 
-            if self.editLabel.resultNum > 100:
+            if self.editLabel.result_num > 100:
                 self.printText(
                     "result폴더 내 파일 개수가 100를 초과합니다. 잘못된 파일이 없는지 확인하세요.")
                 return False
             else:
-                if self.editLabel.resultNum < 100:
+                if self.editLabel.result_num < 100:
                     self.autoMakeFiles()
                 obj_id = self.ui.spinBoxfromIdchange_4.value()
                 pick_frame = self.ui.spinBoxfromIdchange_5.value()
@@ -436,7 +416,7 @@ class MainWindow(QMainWindow):
                     return False
 
                 if obj_id and pick_frame and start_frame and end_frame and ok:
-                    frame_copy, frame_paste = self.editLabel.copyObject(
+                    frame_copy, frame_paste = self.editLabel.copy_object(
                         obj_id, pick_frame, start_frame, end_frame, is_change)
                     self.printText('복사 객체 id: {} 프레임: {} ~ {}'.format(
                         obj_id, start_frame, end_frame))
@@ -465,7 +445,7 @@ class MainWindow(QMainWindow):
         button = messagebox.exec_()  # button:0 예, 1: 아니오
 
         if button == 0:
-            removed_frames = self.editLabel.removeObj(obj)
+            removed_frames = self.editLabel.remove_obj(obj)
         else:
             self.printText("객체 삭제를 취소했습니다.")
             return False
@@ -516,7 +496,7 @@ class MainWindow(QMainWindow):
         print(f'[{now.time():%H:%M:%S}] ' + message)
 
     def checkIfFileRefreshedOld(self):
-        root_path = os.path.dirname(self.editLabel.clipPath)
+        root_path = os.path.dirname(self.editLabel.clip_path)
         clips_path = glob.glob(os.path.join(root_path, '*', '*'))
 
         for clip in clips_path:
@@ -563,10 +543,10 @@ class MainWindow(QMainWindow):
             return False
         self.printText(f'클립 경로 : {self.inputPath}')
         self.printText(f'클립 내 폴더 목록 : {os.listdir(self.inputPath)}')
-        if os.path.isdir(self.editLabel.resultPath):
-            if len(self.editLabel.resultList) > 0:
+        if os.path.isdir(self.editLabel.result_path):
+            if len(self.editLabel.result_list) > 0:
                 self.printText(
-                    f'result 폴더 내 파일 개수: {self.editLabel.resultNum}')
+                    f'result 폴더 내 파일 개수: {self.editLabel.result_num}')
                 self.printText('첫 프레임 객체 정보:')
                 frame_num_first = self.editLabel[0]['frame_no']  # 첫 프레임 번호
                 obj_num_first = len(
@@ -581,7 +561,7 @@ class MainWindow(QMainWindow):
                         self.printText(
                             f'박스 크기(width, height, length) : {box["dimension"][0]:.3f}, {box["dimension"][1]:.3f}, {box["dimension"][2]:.3f} sub_id: {box["sub_id"]}')
 
-                if self.editLabel.resultNum > 1:
+                if self.editLabel.result_num > 1:
                     # 마지막 프레임 번호
                     frame_num_last = self.editLabel[-1]['frame_no']
                     obj_num_last = len(
@@ -604,9 +584,9 @@ class MainWindow(QMainWindow):
 
     def extractZip(self):
         try:
-            with zipfile.ZipFile(self.editLabel.clipPath + '/result.zip', 'r') as zip_ref:
-                zip_ref.extractall(self.editLabel.clipPath + '/result')
-            self.editLabel.setPath(self.editLabel.clipPath)
+            with zipfile.ZipFile(self.editLabel.clip_path + '/result.zip', 'r') as zip_ref:
+                zip_ref.extractall(self.editLabel.clip_path + '/result')
+            self.editLabel.set_path(self.editLabel.clip_path)
             self.printText('압축 풀기 완료')
         except:
             self.printText('압축 풀기 실패')

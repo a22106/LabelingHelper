@@ -2,7 +2,7 @@ import glob, json, os, copy, shutil
 
 class AnalyzeLabel():
     
-    def __init__(self, clipPath = None, extractPath = None) -> None:
+    def __init__(self, clip_path = None, extract_path = None) -> None:
         '''
         부모 클래스 변수
         - self.clipPath: str - 클립 경로
@@ -14,9 +14,9 @@ class AnalyzeLabel():
         '''
         # self.clipName: S_Clip_00000_01 ~ 17 or A_Clip_00000_01 ~ 17
         
-        self.clipPath = clipPath
-        self.extractPath = extractPath
-        self.clipPathList = None
+        self.clip_path = clip_path
+        self.extract_path = extract_path
+        self.clipPath_list = None
     
     # 파일명 일괄수정
     def fix_filenames(self, clip_path = None):
@@ -84,7 +84,6 @@ class AnalyzeLabel():
         # 파일명에 고려해야할 것
         # 과제번호_클립번호_센서_프레임.확장자
 
-        spetical_case = False
         is_calib = False
         clip_num = int(path.split('Clip_')[-1].split('_')[0].split('/')[0]) # 00000 ~ 99999 클립 고유번호 추출
         if sensor_abb == 'LCC' or sensor_abb == 'LRC' or sensor_abb == 'RCC': # calib 폴더인 경우
@@ -98,7 +97,6 @@ class AnalyzeLabel():
         
         file_list = glob.glob(path + '/*')
         for file in file_list:
-            is_file_renamed = False
             file_name = os.path.basename(file)
             
             if file_name[:3] == 'cam' or file_name[:4] == '2-048':
@@ -121,16 +119,16 @@ class AnalyzeLabel():
             if is_calib:
                 # change '481_ND' to '2-048' in file
                 renamed_file = path + '/'+ file_name.replace('481_ND', '2-048')
-                is_file_renamed = self.renameAndPrint(file, renamed_file)
+                is_file_renamed = self.rename_and_print(file, renamed_file)
             else:
                 renamed_file = path + '/'+ '2-048_' + f'{clip_num:05d}' + '_' + sensor_abb+ f'_{file_num:03d}.' + file_extension
-                is_file_renamed = self.renameAndPrint(file, renamed_file)
+                is_file_renamed = self.rename_and_print(file, renamed_file)
             # else:
             #     renamed_file = '_'.join(file.split('_')[:-1]) + f'_{file_num:03d}' + '.' + file_extension
             #     is_file_renamed = self.renameAndPrint(file, renamed_file)
         return True
 
-    def renameAndPrint(self, file, renamed_file):
+    def rename_and_print(self, file, renamed_file):
         os.renames(file, renamed_file)
         print(file, '->', renamed_file)
         return True
