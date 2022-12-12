@@ -311,8 +311,7 @@ class MainWindow(QMainWindow):
                 obj_type = 0
             else:
                 obj_type = 1
-            frames = self.editLabel.change_category(
-                obj_id, obj_type, _CATEGORY[obj_category])
+            frames = self.editLabel.change_category(obj_id, obj_type, _CATEGORY[obj_category])
             self.printText('객체 {}의 카테고리를 {}({})로 변경 완료'.format(
                 obj_id, _OBJTYPE[obj_type], _CATEGORY[obj_category]))
             self.printText('카테고리 변경 프레임: {}'.format(frames))
@@ -585,10 +584,10 @@ class MainWindow(QMainWindow):
     def extractZip(self):
         try:
             with zipfile.ZipFile(self.editLabel.clip_path + '/result.zip', 'r') as zip_ref:
-                zip_ref.extractall(self.editLabel.clip_path + '/result')
+                zip_ref.extractall(self.editLabel.clip_path)
             self.editLabel.set_path(self.editLabel.clip_path)
             self.printText('압축 풀기 완료')
-        except:
+        except FileNotFoundError:
             self.printText('압축 풀기 실패')
             self.printText('해당 클립 폴더 내에 result.zip 파일이 없습니다.')
 

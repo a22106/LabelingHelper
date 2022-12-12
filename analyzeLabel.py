@@ -1,4 +1,4 @@
-import glob, json, os, copy, shutil
+import glob, json, os
 
 class AnalyzeLabel():
     

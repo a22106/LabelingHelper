@@ -1,4 +1,4 @@
-import glob, json, os, copy, shutil, math
+import glob, json, os, shutil, math
 
 
 class EditLabel():
