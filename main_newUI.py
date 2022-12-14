@@ -230,7 +230,7 @@ class MainWindow(QMainWindow):
             length = self.ui.doubleSpinBox_3.value()
             if obj_id:
                 box, frames = self.editLabel.change_dim(
-                    obj_id, width, height, length)
+                    obj_id, width, height, length, os.path.basename(self.inputPath)) # 2022-12-14 클립명 추가
                 self.printText(
                     f'ID: {obj_id}의 크기를 (width:{box[0]:.03f}, height:{box[1]:.03f}, length:{box[2]:.03f})로 변경 완료')
                 self.printText(f'객체 변경 프레임: \n{frames}')

@@ -1,5 +1,5 @@
 import glob, json, os, shutil, math
-
+from proj_2d_box import Cuboid, Proj_2d_Wrapper
 
 class EditLabel():
     def __init__(self, input_path:str):
@@ -76,8 +76,21 @@ class EditLabel():
 
         return frame_is_id
     
+    def get_2dbox(self, loc, dim, rot_y, clipname):
+        box_2d_corr = []
+        semantic_corr = False
+        if int(clipname[-2:]) < 10: semantic_corr=True
+        
+        cb = Cuboid(loc, dim, rot_y)
+        p2b = Proj_2d_Wrapper(clipname, cb).proj_module
+        if p2b is not None:
+            # if p2b.mk_trigger(): box_2d_corr, area_2d_corr = p2b.correct_2d_indev(semantical=semantic_corr)
+            # else: 
+            box_2d_corr, area_2d_corr = p2b.proj_2d_normal()
+        return [box_2d_corr, area_2d_corr]
+    
     # change dimension
-    def change_dim(self, id, width, height, length):
+    def change_dim(self, id, width, height, length, clipname): # 2022-12-14 클립명 추가
         dim = [width, height, length] # 변경할 크기
         frames = []
         for idx in range(self.result_num):
@@ -89,6 +102,18 @@ class EditLabel():
                     for dim_idx, dim_value in enumerate(dim):
                         if dim_value:
                             annot['3d_box'][0]['dimension'][dim_idx] = dim_value
+                    
+                    # 2d box, area 변경(2022-12-14) by Sey
+                    loc = annot['3d_box'][0]['location']
+                    rot_y = annot['3d_box'][0]['rotation_y']
+                    box_2d, area_2d = self.get_2dbox(loc, dim, rot_y, clipname)
+                    
+                    for box_2d_idx, box_2d_value in enumerate(box_2d):
+                        if box_2d_value:
+                            annot['3d_box'][0]['2d_box'][box_2d_idx] = box_2d_value
+                    
+                    annot['3d_box'][0]['2d_area'] = area_2d
+                    
                     print(f"프레임 {json_data['frame_no']}: {id}의 박스 크기를 {annot['3d_box'][0]['dimension']}로 변경")
                     frames.append(json_data['frame_no'])
                     with open(self.result_list[idx], 'w') as f:
