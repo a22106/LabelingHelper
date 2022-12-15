@@ -99,14 +99,27 @@ class EditLabel():
 
             for annot in json_data['annotation']:
                 if int(annot['id']) == id:
-                    for dim_idx, dim_value in enumerate(dim):
-                        if dim_value:
-                            annot['3d_box'][0]['dimension'][dim_idx] = dim_value
                     
                     # 2d box, area 변경(2022-12-14) by Sey
                     loc = annot['3d_box'][0]['location']
                     rot_y = annot['3d_box'][0]['rotation_y']
                     box_2d, area_2d = self.get_2dbox(loc, dim, rot_y, clipname)
+                    
+                    # height 위치 변경 추가(2022-12-14)
+                    height_origin = annot['3d_box'][0]['dimension'][1]
+                    height_gap = height - height_origin
+                    
+                    z_3d = loc[-1] # z축 추가(2022-12-14)
+                    new_z = z_3d + height_gap/2
+                    loc[-1] = new_z
+                    
+                    for dim_idx, dim_value in enumerate(dim):
+                        if dim_value:
+                            annot['3d_box'][0]['dimension'][dim_idx] = dim_value
+                    
+                    for loc_idx, loc_value in enumerate(loc):
+                        if loc_value:
+                            annot['3d_box'][0]['location'][loc_idx] = loc_value
                     
                     for box_2d_idx, box_2d_value in enumerate(box_2d):
                         if box_2d_value:
