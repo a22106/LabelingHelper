@@ -151,7 +151,7 @@ class EditLabel():
             for annot in json_data['annotation']:
                 if int(annot['id']) == id:
                     cur_angle = annot['3d_box'][0]['rotation_y']
-                    changed_angle = (cur_angle + math.pi) % (2 * math.pi)
+                    changed_angle = float((cur_angle + math.pi) % (2 * math.pi))
                     annot['3d_box'][0]['rotation_y'] = changed_angle
                     print(f'프레임 {json_data["frame_no"]}: {id}의 각도를 180˚ 회전 {math.degrees(cur_angle)}-> {math.degrees(changed_angle)}')
                     frames.append(json_data['frame_no'])
