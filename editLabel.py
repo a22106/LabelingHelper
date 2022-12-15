@@ -156,7 +156,7 @@ class EditLabel():
                     print(f'프레임 {json_data["frame_no"]}: {id}의 각도를 180˚ 회전 {math.degrees(cur_angle)}-> {math.degrees(changed_angle)}')
                     frames.append(json_data['frame_no'])
                     with open(self.result_list[idx], 'w') as f:
-                        json.dump(json_data, f, indent=4)
+                        json.dump(json_data, f, indent=4) # 수정된 json 파일 저장
         return frames, math.degrees(cur_angle), math.degrees(changed_angle)
                             
     # change category
